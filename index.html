@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        tg: {
+                            bg: 'var(--tg-bg)',
+                            'bg-secondary': 'var(--tg-bg-secondary)',
+                            'blue': 'var(--tg-blue)',
+                            'blue-dark': 'var(--tg-blue-dark)',
+                            'blue-light': 'var(--tg-blue-light)',
+                            'text-primary': 'var(--tg-text-primary)',
+                            'text-secondary': 'var(--tg-text-secondary)',
+                            'text-tertiary': 'var(--tg-text-tertiary)',
+                            border: 'var(--tg-border)',
+                            hover: 'var(--tg-hover)',
+                            shadow: 'var(--tg-shadow)',
+                            green: '#4ade80',
+                            red: '#ef4444',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="light-mode">
+    <!-- Hamburger Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <!-- Hamburger Sidebar -->
+    <aside class="hamburger-menu" id="hamburgerMenu">
+        <div class="hamburger-header">
+            <div class="hamburger-profile">
+                <img src="https://i.pravatar.cc/150?img=10" alt="Profile" class="hamburger-avatar">
+                <div class="hamburger-user-info">
+                    <h3 class="hamburger-username">John Doe</h3>
+                    <p class="hamburger-phone">@johndoe</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="hamburger-nav">
+            <div class="menu-item" data-action="new-group">
+                <i class="fas fa-user-group"></i>
+                <span>New Group</span>
+            </div>
+            <div class="menu-item" data-action="contacts">
+                <i class="fas fa-address-book"></i>
+                <span>Contacts</span>
+            </div>
+            <div class="menu-item" data-action="calls">
+                <i class="fas fa-phone"></i>
+                <span>Calls</span>
+            </div>
+            <div class="menu-item" data-action="saved">
+                <i class="fas fa-bookmark"></i>
+                <span>Saved Messages</span>
+            </div>
+            <div class="menu-item" data-action="settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-item" data-action="dark-mode" id="darkModeToggle">
+                <i class="fas fa-moon"></i>
+                <span>Dark Mode</span>
+            </div>
+        </nav>
+
+        <div class="hamburger-footer">
+            <div class="menu-item" data-action="help">
+                <i class="fas fa-question-circle"></i>
+                <span>Help</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <button class="back-btn" id="backBtn" style="display: none;">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="chat-info" id="chatInfo" style="display: none;">
+            <img src="" alt="" class="chat-avatar" id="chatAvatar">
+            <div class="chat-details">
+                <h3 class="chat-name" id="chatName"></h3>
+                <p class="chat-status" id="chatStatus"></p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="telegram-container">
+        <!-- Left Sidebar - Chat List -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <button class="menu-btn" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." id="searchInput">
+                </div>
+            </div>
+
+            <!-- Chat List -->
+            <div class="chat-list" id="chatList">
+                <!-- Chats will be rendered here by JavaScript -->
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area" id="chatArea">
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-content">
+                    <i class="fas fa-comments"></i>
+                    <h2>Welcome to Telegram</h2>
+                    <p>Select a chat to start messaging</p>
+                </div>
+            </div>
+
+            <!-- Chat View (hidden by default) -->
+            <div class="chat-view" id="chatView" style="display: none;">
+                <!-- Desktop Header -->
+                <div class="chat-header">
+                    <div class="chat-header-info">
+                        <div class="avatar-wrapper">
+                            <img src="" alt="" class="chat-header-avatar" id="headerAvatar">
+                            <div class="online-indicator" id="headerOnlineIndicator"></div>
+                        </div>
+                        <div class="chat-header-details">
+                            <h3 class="chat-header-name" id="headerName"></h3>
+                            <p class="chat-header-status" id="headerStatus"></p>
+                        </div>
+                    </div>
+                    <div class="chat-header-actions">
+                        <button class="icon-btn" data-action="search-chat" title="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="icon-btn" data-action="phone-call" title="Call">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="icon-btn" data-action="video-call" title="Video Call">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="icon-btn" data-action="more-options" title="More">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chat Actions Menu (Three-dot menu) -->
+                <div class="chat-actions-menu" id="chatActionsMenu">
+                    <div class="chat-actions-item" data-action="view-profile">
+                        <i class="fas fa-user"></i>
+                        <span>View Profile</span>
+                    </div>
+                    <div class="chat-actions-item" data-action="search-chat">
+                        <i class="fas fa-search"></i>
+                        <span>Search</span>
+                    </div>
+                    <div class="chat-actions-divider"></div>
+                    <div class="chat-actions-item" data-action="mute-notifications">
+                        <i class="fas fa-bell-slash"></i>
+                        <span>Mute Notifications</span>
+                    </div>
+                    <div class="chat-actions-item" data-action="clear-history">
+                        <i class="fas fa-broom"></i>
+                        <span>Clear History</span>
+                    </div>
+                    <div class="chat-actions-item" data-action="delete-chat">
+                        <i class="fas fa-trash"></i>
+                        <span>Delete Chat</span>
+                    </div>
+                </div>
+
+                <!-- Messages Container -->
+                <div class="messages-container" id="messagesContainer">
+                    <!-- Messages will be rendered here by JavaScript -->
+                </div>
+
+                <!-- Message Input -->
+                <div class="message-input-container">
+                    <input type="file" id="fileInput" style="display: none;" multiple>
+                    <button class="attach-btn" data-action="attach" title="Attach">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <div class="input-wrapper">
+                        <button class="emoji-btn" data-action="emoji" title="Emoji">
+                            <i class="far fa-smile"></i>
+                        </button>
+                        <input
+                            type="text"
+                            class="message-input"
+                            id="messageInput"
+                            placeholder="Write a message..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    <button class="send-btn" id="sendBtn" title="Send">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Call Modal -->
+    <div class="call-modal" id="callModal">
+        <div class="call-content">
+            <div class="call-header">
+                <div class="call-avatar-wrapper">
+                    <img src="" alt="" class="call-avatar" id="callAvatar">
+                    <div class="call-status-pulse"></div>
+                </div>
+                <h2 class="call-name" id="callName"></h2>
+                <p class="call-status" id="callStatus">Calling...</p>
+            </div>
+            <div class="call-actions">
+                <button class="call-btn mute-btn" id="muteBtn" title="Mute">
+                    <i class="fas fa-microphone"></i>
+                </button>
+                <button class="call-btn video-btn" id="videoBtn" title="Video">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button class="call-btn end-btn" id="endCallBtn" title="End Call">
+                    <i class="fas fa-phone-slash"></i>
+                </button>
+            </div>
+            <div class="call-duration" id="callDuration">00:00</div>
+        </div>
+    </div>
+
+    <!-- Emoji Picker -->
+    <div class="emoji-picker" id="emojiPicker">
+        <div class="emoji-header">
+            <div class="emoji-categories">
+                <button class="emoji-category active" data-category="smileys">😀</button>
+                <button class="emoji-category" data-category="people">👋</button>
+                <button class="emoji-category" data-category="animals">🐱</button>
+                <button class="emoji-category" data-category="food">🍕</button>
+                <button class="emoji-category" data-category="activities">⚽</button>
+                <button class="emoji-category" data-category="objects">💡</button>
+            </div>
+            <button class="emoji-close" id="emojiClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="emoji-search">
+            <input type="text" placeholder="Search emoji..." id="emojiSearch">
+        </div>
+        <div class="emoji-grid" id="emojiGrid">
+            <!-- Emojis will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-content settings-modal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <div class="settings-header-actions">
+                    <button class="settings-header-icon">
+                        <i class="fas fa-border-all"></i>
+                    </button>
+                    <button class="settings-header-icon">
+                        <i class="fas fa-ellipsis-vertical"></i>
+                    </button>
+                    <button class="modal-close" id="closeSettings">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!-- User Profile Section -->
+                <div class="settings-user-profile">
+                    <img src="https://i.pravatar.cc/150?img=10" alt="Profile" class="settings-user-avatar">
+                    <div class="settings-user-info">
+                        <div class="settings-user-name">Amir</div>
+                        <div class="settings-user-phone">+98 914 091 2196</div>
+                        <div class="settings-user-username">@amir_bg81</div>
+                    </div>
+                </div>
+
+                <!-- Settings List -->
+                <div class="settings-list">
+                    <div class="settings-item" data-action="my-account">
+                        <i class="fas fa-user"></i>
+                        <span>My Account</span>
+                    </div>
+                    <div class="settings-item" data-action="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications and Sounds</span>
+                    </div>
+                    <div class="settings-item" data-action="privacy">
+                        <i class="fas fa-lock"></i>
+                        <span>Privacy and Security</span>
+                    </div>
+                    <div class="settings-item" data-action="chat-settings">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Chat Settings</span>
+                    </div>
+                    <div class="settings-item" data-action="folders">
+                        <i class="fas fa-folder"></i>
+                        <span>Folders</span>
+                    </div>
+                    <div class="settings-item" data-action="advanced">
+                        <i class="fas fa-sliders"></i>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="settings-item" data-action="speakers">
+                        <i class="fas fa-microphone-lines"></i>
+                        <span>Speakers and Camera</span>
+                    </div>
+                    <div class="settings-item" data-action="battery">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <span>Battery and Animations</span>
+                    </div>
+                    <div class="settings-item" data-action="language">
+                        <i class="fas fa-globe"></i>
+                        <span>Language</span>
+                        <span class="settings-item-value">English</span>
+                    </div>
+                    <div class="settings-item" data-action="interface-scale">
+                        <i class="fas fa-maximize"></i>
+                        <span>Default interface scale</span>
+                        <div class="settings-toggle-wrapper">
+                            <span class="settings-toggle-text">100%</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="settings-item" data-action="faq">
+                        <i class="fas fa-circle-question"></i>
+                        <span>Telegram FAQ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy and Security Sub-page -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-content privacy-modal">
+            <div class="modal-header with-back">
+                <button class="modal-back" id="backFromPrivacy">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Privacy and Security</h2>
+                <button class="modal-close" id="closePrivacy">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="privacy-section">
+                    <div class="privacy-section-title">Security</div>
+                    <div class="privacy-item">
+                        <i class="fas fa-shield-halved"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Two-Step Verification</span>
+                        </div>
+                        <span class="privacy-item-value">On</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Auto-Delete Messages</span>
+                        </div>
+                        <span class="privacy-item-value">Off</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-lock"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Local passcode</span>
+                        </div>
+                        <span class="privacy-item-value">On</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-ban"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Blocked users</span>
+                        </div>
+                        <span class="privacy-item-value">232</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-laptop"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Active sessions</span>
+                            <span class="privacy-item-subtitle">Manage your sessions on all your devices.</span>
+                        </div>
+                        <span class="privacy-item-value">5</span>
+                    </div>
+                </div>
+
+                <div class="privacy-section">
+                    <div class="privacy-section-title">Privacy</div>
+                    <div class="privacy-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Phone number</span>
+                        </div>
+                        <span class="privacy-item-value">Nobody (+7)</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-eye"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Last seen & online</span>
+                        </div>
+                        <span class="privacy-item-value">Nobody</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-image"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Profile photos</span>
+                        </div>
+                        <span class="privacy-item-value">My contacts</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-share"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Forwarded messages</span>
+                        </div>
+                        <span class="privacy-item-value">Nobody</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Calls</span>
+                        </div>
+                        <span class="privacy-item-value">My contacts</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-microphone"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Voice messages</span>
+                        </div>
+                        <span class="privacy-item-value">Everybody</span>
+                    </div>
+                    <div class="privacy-item">
+                        <i class="fas fa-comment"></i>
+                        <div class="privacy-item-info">
+                            <span class="privacy-item-label">Messages</span>
+                        </div>
+                        <span class="privacy-item-value">Everybody</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Settings Sub-page -->
+    <div class="modal-overlay" id="chatSettingsModal">
+        <div class="modal-content chat-settings-modal">
+            <div class="modal-header with-back">
+                <button class="modal-back" id="backFromChatSettings">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Chat Settings</h2>
+                <button class="modal-close" id="closeChatSettings">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="chat-settings-section">
+                    <div class="chat-settings-section-title">Themes</div>
+                    <div class="themes-preview">
+                        <div class="theme-item active">
+                            <div class="theme-preview classic"></div>
+                        </div>
+                        <div class="theme-item">
+                            <div class="theme-preview day"></div>
+                        </div>
+                        <div class="theme-item">
+                            <div class="theme-preview tinted"></div>
+                        </div>
+                        <div class="theme-item">
+                            <div class="theme-preview night"></div>
+                        </div>
+                    </div>
+                    <div class="color-palette">
+                        <div class="color-swatch" style="background: #4a90e2;"></div>
+                        <div class="color-swatch" style="background: #7dd3fc;"></div>
+                        <div class="color-swatch" style="background: #4ade80;"></div>
+                        <div class="color-swatch" style="background: #f472b6;"></div>
+                        <div class="color-swatch" style="background: #fb923c;"></div>
+                        <div class="color-swatch" style="background: #a78bfa;"></div>
+                        <div class="color-swatch" style="background: #f87171;"></div>
+                        <div class="color-swatch" style="background: #9ca3af;"></div>
+                        <div class="color-swatch" style="background: #fbbf24;"></div>
+                        <div class="color-swatch rainbow">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-settings-section">
+                    <div class="chat-settings-section-title">Theme settings</div>
+                    <div class="chat-settings-item">
+                        <i class="fas fa-pencil"></i>
+                        <span>Your name color</span>
+                        <span class="badge-new">NEW</span>
+                        <span class="chat-settings-value name-color">Amir</span>
+                    </div>
+                    <div class="chat-settings-item">
+                        <i class="fas fa-moon"></i>
+                        <span>Auto-night mode</span>
+                        <span class="chat-settings-value">System</span>
+                    </div>
+                    <div class="chat-settings-item">
+                        <i class="fas fa-font"></i>
+                        <span>Font family</span>
+                        <span class="chat-settings-value">Default</span>
+                    </div>
+                </div>
+
+                <div class="chat-settings-section">
+                    <div class="chat-settings-section-title">Chat wallpaper</div>
+                    <div class="chat-settings-item button">
+                        <span>Choose from gallery</span>
+                    </div>
+                    <div class="chat-settings-item button">
+                        <span>Choose from file</span>
+                    </div>
+                    <div class="wallpaper-preview"></div>
+                </div>
+
+                <div class="chat-settings-section">
+                    <div class="chat-settings-section-title">Chat list quick action</div>
+                    <div class="chat-settings-item">
+                        <span>Long press opens</span>
+                        <span class="chat-settings-value">Folders</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Group Modal -->
+    <div class="modal-overlay" id="newGroupModal">
+        <div class="modal-content new-group-modal">
+            <div class="modal-header">
+                <h2>New Group</h2>
+                <button class="modal-close" id="closeNewGroup">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="group-name-input">
+                    <input type="text" placeholder="Group Name" id="groupNameInput">
+                </div>
+                <div class="group-members">
+                    <h3>Select Members</h3>
+                    <div class="member-list" id="memberList">
+                        <!-- Members will be rendered here -->
+                    </div>
+                </div>
+                <button class="btn-primary" id="createGroupBtn">Create Group</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contacts Modal -->
+    <div class="modal-overlay" id="contactsModal">
+        <div class="modal-content contacts-modal">
+            <div class="modal-header">
+                <h2>Contacts</h2>
+                <button class="modal-close" id="closeContacts">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="contacts-search">
+                    <input type="text" placeholder="Search contacts..." id="contactsSearchInput">
+                </div>
+                <div class="contacts-list" id="contactsList">
+                    <!-- Contacts will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content profile-modal-large">
+            <button class="modal-close modal-close-top" id="closeProfile">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body">
+                <!-- Avatar & User Info -->
+                <div class="profile-hero">
+                    <img src="" alt="Profile" class="profile-hero-avatar" id="profileAvatar">
+                    <h3 class="profile-hero-name" id="profileName"></h3>
+                    <p class="profile-hero-status" id="profileStatus"></p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="profile-actions">
+                    <button class="profile-action-btn" data-action="message">
+                        <i class="fas fa-comment"></i>
+                        <span>Message</span>
+                    </button>
+                    <button class="profile-action-btn" data-action="mute">
+                        <i class="fas fa-bell"></i>
+                        <span>Mute</span>
+                    </button>
+                    <button class="profile-action-btn" data-action="call">
+                        <i class="fas fa-phone"></i>
+                        <span>Call</span>
+                    </button>
+                    <button class="profile-action-btn" data-action="more">
+                        <i class="fas fa-ellipsis"></i>
+                        <span>More</span>
+                    </button>
+                </div>
+
+                <!-- Detailed Info -->
+                <div class="profile-details-section">
+                    <div class="profile-info-row">
+                        <div class="profile-info-icon">
+                            <i class="fas fa-mobile"></i>
+                        </div>
+                        <div class="profile-info-content">
+                            <div class="profile-info-label">Mobile</div>
+                            <div class="profile-info-value" id="profilePhone"></div>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="profile-info-content">
+                            <div class="profile-info-label">Bio</div>
+                            <div class="profile-info-value" id="profileBio"></div>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-icon">
+                            <i class="fas fa-at"></i>
+                        </div>
+                        <div class="profile-info-content">
+                            <div class="profile-info-label">Username</div>
+                            <div class="profile-info-value username-with-copy">
+                                <span id="profileUsername"></span>
+                                <button class="copy-username-btn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media/Stats Section -->
+                <div class="profile-media-section">
+                    <div class="profile-stat-item">
+                        <i class="fas fa-images"></i>
+                        <span>3 photos</span>
+                    </div>
+                    <div class="profile-stat-item">
+                        <i class="fas fa-file"></i>
+                        <span>20 files</span>
+                    </div>
+                    <div class="profile-stat-item">
+                        <i class="fas fa-link"></i>
+                        <span>62 shared links</span>
+                    </div>
+                    <div class="profile-stat-item">
+                        <i class="fas fa-users"></i>
+                        <span>5 groups in common</span>
+                    </div>
+                </div>
+
+                <!-- Share Option -->
+                <div class="profile-share-section">
+                    <button class="profile-share-btn">
+                        <i class="fas fa-share"></i>
+                        <span>Share this contact</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Account Modal -->
+    <div class="modal-overlay" id="myAccountModal">
+        <div class="modal-content my-account-modal">
+            <div class="modal-header with-back">
+                <button class="modal-back" id="backFromMyAccount">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2></h2>
+                <button class="modal-close" id="closeMyAccount">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Avatar Section -->
+                <div class="my-account-avatar-section">
+                    <div class="my-account-avatar-wrapper">
+                        <img src="https://i.pravatar.cc/150?img=10" alt="Profile" class="my-account-avatar" id="myAccountAvatar">
+                        <button class="my-account-qr-btn">
+                            <i class="fas fa-qrcode"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- User Info Fields -->
+                <div class="my-account-fields">
+                    <!-- Name Field -->
+                    <div class="my-account-field">
+                        <div class="my-account-field-label">Name</div>
+                        <div class="my-account-field-value editable" id="myAccountName">
+                            Amir
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="my-account-field">
+                        <div class="my-account-field-label">Username</div>
+                        <div class="my-account-field-value username-field">
+                            <span id="myAccountUsername">@amir_bg81</span>
+                            <button class="my-account-copy-btn">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bio Field -->
+                    <div class="my-account-field">
+                        <div class="my-account-field-label">Bio</div>
+                        <div class="my-account-field-value editable" id="myAccountBio">
+                            Hey there! I am using Telegram.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Info Section -->
+                <div class="my-account-info-section">
+                    <div class="my-account-info-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="my-account-info-content">
+                            <span class="my-account-info-label">Phone</span>
+                            <span class="my-account-info-value">+98 914 091 2196</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call History Modal -->
+    <div class="modal-overlay" id="callHistoryModal">
+        <div class="modal-content call-history-modal">
+            <div class="modal-header">
+                <h2>Call History</h2>
+                <button class="modal-close" id="closeCallHistory">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="call-history-list" id="callHistoryList">
+                    <!-- Call history will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forward Modal -->
+    <div class="modal-overlay" id="forwardModal">
+        <div class="modal-content forward-modal">
+            <div class="modal-header">
+                <h2>Forward Message</h2>
+                <button class="modal-close" id="closeForward">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="forward-chat-list" id="forwardChatList">
+                    <!-- Forward chat list will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

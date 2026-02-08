@@ -1,0 +1,289 @@
+/* ===== Telegram Web Clone - Minimal CSS (Tailwind + Custom) ===== */
+
+/* ===== CSS Variables ===== */
+:root {
+    --tg-bg: #ffffff;
+    --tg-bg-secondary: #f4f4f5;
+    --tg-blue: #3390ec;
+    --tg-blue-dark: #2872bd;
+    --tg-blue-light: #e8f4fc;
+    --tg-text-primary: #000000;
+    --tg-text-secondary: #707579;
+    --tg-text-tertiary: #8e8e93;
+    --tg-border: #dfe1e5;
+    --tg-hover: #f4f4f5;
+    --tg-shadow: rgba(0, 0, 0, 0.15);
+    --tg-green: #4ade80;
+    --tg-red: #ef4444;
+}
+
+.dark {
+    --tg-bg: #212121;
+    --tg-bg-secondary: #2c2c2c;
+    --tg-blue: #3390ec;
+    --tg-blue-dark: #2872bd;
+    --tg-blue-light: #1a3a5c;
+    --tg-text-primary: #ffffff;
+    --tg-text-secondary: #aaaaaa;
+    --tg-text-tertiary: #707579;
+    --tg-border: #0f0f0f;
+    --tg-hover: #2c2c2c;
+    --tg-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Base Styles ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tg-text-tertiary);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--tg-text-secondary);
+}
+
+/* ===== Animations ===== */
+@keyframes toastSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes toastSlideDown {
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+@keyframes menuFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes emojiSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(74, 222, 128, 0);
+    }
+}
+
+.toast {
+    animation: toastSlideUp 0.3s ease;
+}
+
+.toast.hiding {
+    animation: toastSlideDown 0.3s ease forwards;
+}
+
+.chat-actions-menu.active {
+    animation: menuFadeIn 0.2s ease;
+}
+
+.emoji-picker.active {
+    animation: emojiSlideUp 0.2s ease;
+}
+
+.call-status-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* ===== Flip Horizontal for Incoming Call Icons ===== */
+.fa-flip-horizontal {
+    transform: scaleX(-1);
+}
+
+/* ===== Toggle Switch ===== */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--tg-text-tertiary);
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--tg-blue);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* ===== Video Thumbnail Play Icon ===== */
+.video-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+/* ===== Toast ===== */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    background: var(--tg-bg);
+    color: var(--tg-text-primary);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px var(--tg-shadow);
+    min-width: 280px;
+    max-width: 400px;
+    pointer-events: all;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toast-icon {
+    font-size: 20px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.toast-icon.success {
+    color: var(--tg-green);
+}
+
+.toast-icon.error {
+    color: var(--tg-red);
+}
+
+.toast-icon.info {
+    color: var(--tg-blue);
+}
+
+.toast-icon.warning {
+    color: #fbbf24;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.toast-message {
+    font-size: 13px;
+    color: var(--tg-text-secondary);
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--tg-text-tertiary);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 16px;
+    transition: color 0.2s;
+}
+
+.toast-close:hover {
+    color: var(--tg-text-primary);
+}
+
+/* ===== Responsive Utilities ===== */
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+}
