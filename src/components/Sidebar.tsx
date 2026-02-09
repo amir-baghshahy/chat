@@ -1,0 +1,30 @@
+import { SearchInput } from './SearchInput'
+import { ChatList } from './ChatList'
+import { useTelegram } from '../contexts/TelegramContext'
+
+export function Sidebar() {
+  const { isMobile, currentChat, openModal } = useTelegram()
+
+  return (
+    <aside
+      className={`${isMobile ? 'w-full' : 'w-[var(--sidebar-width)]'} bg-[color:var(--tg-bg)] border-r border-[color:var(--tg-border)] flex flex-col transition-transform duration-300
+        ${isMobile && currentChat ? '-translate-x-full' : ''}
+        ${isMobile ? 'absolute inset-y-0 left-0 z-[40]' : ''}
+      `}
+    >
+      {/* Sidebar Header */}
+      <div className="px-4 py-3 flex items-center gap-3 border-b border-[color:var(--tg-border)]">
+        <button
+          className="bg-transparent border-none text-[color:var(--tg-blue)] cursor-pointer p-2 transition-colors hover:text-[color:var(--tg-blue-dark)]"
+          onClick={() => openModal('hamburger')}
+        >
+          <i className="fas fa-bars text-xl"></i>
+        </button>
+        <SearchInput />
+      </div>
+
+      {/* Chat List */}
+      <ChatList />
+    </aside>
+  )
+}
