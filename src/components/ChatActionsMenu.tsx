@@ -71,17 +71,17 @@ export function ChatActionsMenu() {
         <span>Mute Notifications</span>
       </div>
       <div
-        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
+        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-red-500 hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('clear-history')}
       >
-        <i className="fas fa-broom text-[var(--tg-text-secondary)] text-center w-5"></i>
+        <i className="fas fa-broom text-red-500 text-center w-5"></i>
         <span>Clear History</span>
       </div>
       <div
         className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-red-500 hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('delete-chat')}
       >
-        <i className="fas fa-trash text-center w-5"></i>
+        <i className="fas fa-trash text-red-500 text-center w-5"></i>
         <span>Delete Chat</span>
       </div>
     </div>

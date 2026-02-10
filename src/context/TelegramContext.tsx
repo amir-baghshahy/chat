@@ -18,6 +18,7 @@ import { useEmojiState } from './telegram/useEmojiState'
 import { useCallState } from './telegram/useCallState'
 import { useMemberSelection } from './telegram/useMemberSelection'
 import { useSettingsNavigation } from './telegram/useSettingsNavigation'
+import { useChatIndicators } from './telegram/useChatIndicators'
 
 const TelegramContext = createContext<TelegramContextType | undefined>(undefined)
 
@@ -38,9 +39,10 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
   const callState = useCallState()
   const memberSelection = useMemberSelection()
   const settingsNavigation = useSettingsNavigation()
+  const chatIndicators = useChatIndicators()
 
   // Modal hooks
-  const { modalStack, modals, toasts, openModal, closeModal, goBackModal, showToast } = useModalHooks()
+  const { modals, toasts, openModal, closeModal, goBackModal, showToast } = useModalHooks()
 
   // Chat hooks
   const { openChat, pinChat, muteChat, deleteChat, clearChatHistory, forwardMessageToChat } = useChatHooks({
@@ -121,6 +123,15 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
 
     // Selection state
     selectedMembers: memberSelection.selectedMembers,
+
+    // Chat indicators
+    typingChats: chatIndicators.typingChats,
+    uploadingChats: chatIndicators.uploadingChats,
+    setChatTyping: chatIndicators.setChatTyping,
+    setUploadingFile: chatIndicators.setUploadingFile,
+    updateUploadProgress: chatIndicators.updateUploadProgress,
+    isChatTyping: chatIndicators.isChatTyping,
+    getUploadingFile: chatIndicators.getUploadingFile,
 
     // Message state
     replyingTo,

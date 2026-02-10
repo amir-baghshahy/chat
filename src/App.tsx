@@ -96,7 +96,7 @@ function AppContent() {
               onClick={() => openModal('chatActions')}
               data-action="more-options"
             >
-              <i className="fas fa-ellipsis-v text-lg sm:text-xl"></i>
+              <i className="fas fa-ellipsis-vertical text-lg sm:text-xl"></i>
             </button>
           </div>
         </header>

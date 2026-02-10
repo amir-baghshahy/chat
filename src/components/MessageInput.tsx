@@ -12,7 +12,6 @@ export function MessageInput() {
     cancelEdit,
     showEmojiPicker,
     setShowEmojiPicker,
-    currentChat,
   } = useTelegram()
 
   const [inputValue, setInputValue] = useState('')

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { chatsData } from '../data'
-import type { Chat, Message, ModalName } from '../types'
+import type { Chat, Message, ModalName, ToastType } from '../types'
 
 interface ChatHooksProps {
   currentChat: Chat | null
@@ -8,7 +8,7 @@ interface ChatHooksProps {
   setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void
   closeModal: (modalName: ModalName) => void
   goBack: () => void
-  showToast?: (title: string, message: string, type: string) => void
+  showToast?: (title: string, message: string, type?: ToastType) => void
 }
 
 export function useChatHooks({ currentChat, setCurrentChat, setMessages, closeModal, goBack, showToast }: ChatHooksProps) {
@@ -49,7 +49,7 @@ export function useChatHooks({ currentChat, setCurrentChat, setMessages, closeMo
       }
 
       if (showToast) {
-        showToast('Deleted', `${chat.name} chat has been deleted`, 'error')
+        showToast('Deleted', `${chat.name} chat has been deleted`, 'error' as ToastType)
       }
     },
     [currentChat, goBack, showToast]
@@ -69,7 +69,7 @@ export function useChatHooks({ currentChat, setCurrentChat, setMessages, closeMo
       }
 
       if (showToast) {
-        showToast('Cleared', `Chat history with ${chat.name} has been cleared`, 'success')
+        showToast('Cleared', `Chat history with ${chat.name} has been cleared`, 'success' as ToastType)
       }
     },
     [currentChat, setMessages, showToast]
@@ -111,7 +111,7 @@ export function useChatHooks({ currentChat, setCurrentChat, setMessages, closeMo
       }
 
       if (showToast) {
-        showToast('Forwarded', `Message forwarded to ${targetChat.name}`, 'success')
+        showToast('Forwarded', `Message forwarded to ${targetChat.name}`, 'success' as ToastType)
       }
     },
     [closeModal, setCurrentChat, setMessages, showToast]

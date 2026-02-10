@@ -53,7 +53,7 @@ export function MessageContextMenu({ message, position, onAction }: MessageConte
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-red-500 hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"
             onClick={() => onAction('delete')}
           >
-            <i className="fas fa-trash"></i>
+            <i className="fas fa-trash text-red-500"></i>
             <span>Delete</span>
           </div>
         )}

@@ -2,6 +2,7 @@ import { useState, useCallback, useRef } from 'react'
 import { useTelegram } from '../context/TelegramContext'
 import { clsx } from 'clsx'
 import type { Chat } from '../types'
+import { TypingIndicator } from './chat/ChatIndicators'
 
 interface ChatItemProps {
   chat: Chat
@@ -9,7 +10,7 @@ interface ChatItemProps {
 }
 
 export function ChatItem({ chat, isActive }: ChatItemProps) {
-  const { openChat, pinChat, muteChat, deleteChat, clearChatHistory } = useTelegram()
+  const { openChat, pinChat, muteChat, deleteChat, clearChatHistory, isChatTyping } = useTelegram()
   const [showContextMenu, setShowContextMenu] = useState(false)
   const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -120,10 +121,16 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
           </div>
         </div>
         <div className="flex justify-between items-center gap-2">
-          <span className={clsx(
-            'text-[13px] sm:text-[14px] truncate flex-1 min-w-0',
-            chat.muted ? 'text-[var(--tg-text-tertiary)]' : 'text-[var(--tg-text-secondary)]'
-          )}>{chat.lastMessage}</span>
+          <div className="flex-1 min-w-0">
+            {isChatTyping(chat.id) ? (
+              <TypingIndicator chatId={chat.id} />
+            ) : (
+              <span className={clsx(
+                'text-[13px] sm:text-[14px] truncate block',
+                chat.muted ? 'text-[var(--tg-text-tertiary)]' : 'text-[var(--tg-text-secondary)]'
+              )}>{chat.lastMessage}</span>
+            )}
+          </div>
           {chat.unread > 0 && !chat.muted && (
             <span className="bg-[color:var(--tg-blue)] text-white text-[10px] sm:text-[11px] font-semibold px-1 sm:px-1.5 py-0.5 rounded-full min-w-[18px] sm:min-w-[20px] text-center flex-shrink-0">
               {chat.unread > 99 ? '99+' : chat.unread}
@@ -167,17 +174,17 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
           </div>
           <div className="h-px bg-[color:var(--tg-border)] my-1"></div>
           <div
-            className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"
+            className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-red-500 hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"
             onClick={() => handleContextMenuAction('clear-history')}
           >
-            <i className="fas fa-broom text-[var(--tg-blue)]"></i>
+            <i className="fas fa-broom text-red-500"></i>
             <span>Clear History</span>
           </div>
           <div
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-red-500 hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"
             onClick={() => handleContextMenuAction('delete')}
           >
-            <i className="fas fa-trash"></i>
+            <i className="fas fa-trash text-red-500"></i>
             <span>Delete Chat</span>
           </div>
         </div>

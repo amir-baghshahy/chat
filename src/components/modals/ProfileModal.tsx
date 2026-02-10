@@ -63,7 +63,7 @@ export function ProfileModal() {
             <ProfileActionButton icon="fa-comment" label="Message" onClick={() => handleAction('message')} />
             <ProfileActionButton icon={isMuted ? "fa-bell-slash" : "fa-bell"} label="Mute" onClick={() => handleAction('mute')} />
             <ProfileActionButton icon="fa-phone" label="Call" onClick={() => handleAction('call')} />
-            <ProfileActionButton icon="fa-ellipsis" label="More" onClick={() => handleAction('more')} />
+            <ProfileActionButton icon="fa-ellipsis-vertical" label="More" onClick={() => handleAction('more')} />
           </div>
 
           {/* Detailed Info */}

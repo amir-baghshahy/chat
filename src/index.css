@@ -266,3 +266,39 @@ input, textarea {
     transform: translateX(100%);
   }
 }
+
+/* Message highlight animation for reply navigation */
+.message-highlight {
+  animation: messagePulse 1.5s ease-out;
+}
+
+@keyframes messagePulse {
+  0% {
+    background-color: var(--tg-blue-light);
+    transform: scale(1);
+  }
+  50% {
+    background-color: var(--tg-blue-light);
+    transform: scale(1.02);
+  }
+  100% {
+    background-color: transparent;
+    transform: scale(1);
+  }
+}
+
+/* Message animation */
+.animate-message-in {
+  animation: messageSlideIn 0.3s ease-out;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

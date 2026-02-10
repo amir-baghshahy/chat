@@ -1,7 +1,8 @@
 import { useTelegram } from '../context/TelegramContext'
+import { TypingIndicator } from './chat/ChatIndicators'
 
 export function ChatHeader() {
-  const { currentChat, openModal, closeModal, modals } = useTelegram()
+  const { currentChat, openModal, closeModal, modals, isChatTyping } = useTelegram()
   if (!currentChat) return null
 
   const handleAction = (action: string) => {
@@ -56,9 +57,13 @@ export function ChatHeader() {
           </div>
           <div>
             <h3 className="text-[15px] sm:text-[16px] font-semibold text-[var(--tg-text-primary)] truncate">{currentChat.name}</h3>
-            <p className="text-[12px] sm:text-[13px] text-[var(--tg-text-tertiary)] mt-0.5">
-              {currentChat.online ? 'online' : 'last seen recently'}
-            </p>
+            <div className="text-[12px] sm:text-[13px] text-[var(--tg-text-tertiary)] mt-0.5">
+              {isChatTyping(currentChat.id) ? (
+                <TypingIndicator chatId={currentChat.id} />
+              ) : (
+                currentChat.online ? 'online' : 'last seen recently'
+              )}
+            </div>
           </div>
         </div>
         <div className="flex gap-0.5 sm:gap-1">
@@ -89,7 +94,7 @@ export function ChatHeader() {
             title="More"
             data-action="more-options"
           >
-            <i className="fas fa-ellipsis-v text-base sm:text-lg"></i>
+            <i className="fas fa-ellipsis-vertical text-base sm:text-lg"></i>
           </button>
         </div>
       </div>

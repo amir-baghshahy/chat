@@ -3,25 +3,49 @@ import type { Message as MessageType } from '../../types'
 
 interface MessageContentProps {
   message: MessageType
+  onReplyClick?: (messageId: number) => void
+  onForwardClick?: (fromName: string) => void
 }
 
-export function MessageContent({ message }: MessageContentProps) {
+export function MessageContent({ message, onReplyClick, onForwardClick }: MessageContentProps) {
   return (
     <>
       {message.forwardedFrom && (
-        <div className="flex items-center gap-2 mb-2 text-[11px] text-[var(--tg-text-tertiary)]">
-          <i className="fas fa-share text-[var(--tg-blue)] text-[10px] flex-shrink-0"></i>
-          <span>
-            Forwarded from <span className="text-[var(--tg-text-secondary)] dark:text-[var(--tg-text-secondary)] font-medium">{message.forwardedFrom}</span>
-          </span>
+        <div
+          className={clsx(
+            'flex items-center gap-2 mb-2 px-2 py-1.5 rounded-lg cursor-pointer transition-all',
+            'bg-[color:var(--tg-bg-secondary)] border border-[color:var(--tg-border)]',
+            'hover:bg-[color:var(--tg-hover)] active:scale-[0.98]'
+          )}
+          onClick={() => onForwardClick?.(message.forwardedFrom!)}
+          title="Click to view profile"
+        >
+          <div className="w-5 h-5 bg-[color:var(--tg-blue-light)] rounded-full flex items-center justify-center flex-shrink-0">
+            <i className="fas fa-share text-[var(--tg-blue)] text-[9px]"></i>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] text-[var(--tg-text-secondary)] uppercase tracking-wide font-medium">
+              Forwarded
+            </div>
+            <div className="text-[12px] text-[var(--tg-text-primary)] font-semibold truncate">
+              from {message.forwardedFrom}
+            </div>
+          </div>
         </div>
       )}
       {message.replyTo && (
-        <div className="mb-2 pb-2 border-b border-black/10 dark:border-white/10">
-          <div className="text-[11px] text-[var(--tg-text-tertiary)] mb-0.5">
-            <span className="text-[var(--tg-blue)] dark:text-[var(--tg-blue)] font-medium">{message.replyTo.name}</span>
+        <div
+          className={clsx(
+            'mb-2 pb-2 border-b border-black/15 dark:border-white/15 cursor-pointer rounded px-1 -mx-1 transition-all',
+            'hover:bg-black/5 dark:hover:bg-white/5 active:scale-[0.98]'
+          )}
+          onClick={() => onReplyClick?.(message.replyTo!.id)}
+          title="Click to view original message"
+        >
+          <div className="text-[11px] text-[var(--tg-text-secondary)] mb-0.5">
+            <span className="text-[var(--tg-blue)] font-semibold">{message.replyTo.name}</span>
           </div>
-          <div className="text-[12px] text-[var(--tg-text-secondary)] truncate opacity-90 dark:opacity-80">
+          <div className="text-[12px] text-[var(--tg-text-primary)] truncate font-medium">
             {message.replyTo.text || 'Media'}
           </div>
         </div>

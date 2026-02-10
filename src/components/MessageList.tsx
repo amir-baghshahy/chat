@@ -2,7 +2,7 @@ import { forwardRef, useRef, useEffect } from 'react'
 import { Message } from './Message'
 import { useTelegram } from '../context/TelegramContext'
 
-export const MessageList = forwardRef<HTMLDivElement>((props, ref) => {
+export const MessageList = forwardRef<HTMLDivElement>((_props, ref) => {
   const { messages, isMobile } = useTelegram()
   const innerRef = useRef<HTMLDivElement>(null)
   const scrollRef = ref || innerRef

@@ -10,7 +10,32 @@ interface MessageProps {
 }
 
 export function Message({ message }: MessageProps) {
-  const { startReply, startEdit, startForward } = useTelegram()
+  const { startReply, startEdit, startForward, openModal, chatsData, setCurrentChat } = useTelegram()
+  const messageRef = useRef<HTMLDivElement>(null)
+
+  // Scroll to replied message
+  const handleReplyClick = useCallback((messageId: number) => {
+    const messageElement = document.querySelector(`[data-message-id="${messageId}"]`)
+    if (messageElement) {
+      messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      // Add highlight animation
+      messageElement.classList.add('message-highlight')
+      setTimeout(() => {
+        messageElement.classList.remove('message-highlight')
+      }, 1500)
+    }
+  }, [])
+
+  // Handle forward click - open profile of the original sender
+  const handleForwardClick = useCallback((fromName: string) => {
+    // Find the chat for this person
+    const senderChat = chatsData.find(c => c.name === fromName)
+    if (senderChat) {
+      // Set as current chat and open profile
+      setCurrentChat(senderChat)
+      openModal('profile')
+    }
+  }, [chatsData, setCurrentChat, openModal])
   const [showContextMenu, setShowContextMenu] = useState(false)
   const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
   const tapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -101,6 +126,8 @@ export function Message({ message }: MessageProps) {
   return (
     <>
       <div
+        ref={messageRef}
+        data-message-id={message.id}
         className={clsx(
           'message flex max-w-[85%] sm:max-w-[70%] animate-message-in relative',
           message.outgoing ? 'self-end flex-row-reverse' : 'self-start'
@@ -120,7 +147,7 @@ export function Message({ message }: MessageProps) {
               : 'bg-[color:var(--tg-message-in)] rounded-tl-sm'
           )}
         >
-          <MessageContent message={message} />
+          <MessageContent message={message} onReplyClick={handleReplyClick} onForwardClick={handleForwardClick} />
         </div>
       </div>
 
