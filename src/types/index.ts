@@ -10,6 +10,9 @@ export interface Chat {
   unread: number
   online: boolean
   isSaved?: boolean
+  isGroup?: boolean
+  isPinned?: boolean
+  muted?: boolean
   bio?: string
   messages?: Message[]
 }
@@ -80,6 +83,7 @@ export type ModalName =
   | 'privacy'
   | 'chatSettings'
   | 'myAccount'
+  | 'folders'
 
 export interface ModalsState {
   [key: string]: boolean
@@ -143,6 +147,10 @@ export interface TelegramContextType {
   cancelEdit: () => void
   startForward: (message: Message) => void
   forwardMessageToChat: (message: Message, chatId: number, fromChatName: string) => void
+  pinChat: (chatId: number) => void
+  muteChat: (chatId: number) => void
+  deleteChat: (chatId: number) => void
+  clearChatHistory: (chatId: number) => void
   toggleMemberSelection: (memberId: number) => void
   showToast: (title: string, message: string, type?: ToastType, duration?: number) => void
   startCall: (chat: Chat, isVideo?: boolean) => void

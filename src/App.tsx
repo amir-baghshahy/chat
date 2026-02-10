@@ -9,6 +9,9 @@ import { ContactsModal } from './components/modals/ContactsModal'
 import { CallHistoryModal } from './components/modals/CallHistoryModal'
 import { CallScreenModal } from './components/modals/CallScreenModal'
 import { ForwardModal } from './components/modals/ForwardModal'
+import { MyAccountModal } from './components/modals/MyAccountModal'
+import { ChatSettingsModal } from './components/modals/ChatSettingsModal'
+import { FoldersModal } from './components/modals/FoldersModal'
 import { ToastContainer } from './components/ToastContainer'
 import { useTelegram } from './contexts/TelegramContext'
 import { TelegramProvider } from './contexts/TelegramContext'
@@ -112,6 +115,9 @@ function AppContent() {
       {modals.callHistory && <CallHistoryModal />}
       {modals.callScreen && <CallScreenModal />}
       {modals.forward && <ForwardModal />}
+      {modals.myAccount && <MyAccountModal />}
+      {modals.chatSettings && <ChatSettingsModal />}
+      {modals.folders && <FoldersModal />}
 
       {/* Toast Notifications */}
       <ToastContainer />

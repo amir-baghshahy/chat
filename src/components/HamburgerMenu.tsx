@@ -7,28 +7,32 @@ export function HamburgerMenu() {
   if (!modals.hamburger) return null
 
   const handleAction = (action: string) => {
-    closeModal('hamburger')
     switch (action) {
       case 'new-group':
+        closeModal('hamburger')
         openModal('newGroup')
         break
       case 'contacts':
+        closeModal('hamburger')
         openModal('contacts')
         break
       case 'calls':
+        closeModal('hamburger')
         openModal('callHistory')
         break
       case 'saved':
         // Handle saved messages
         break
       case 'settings':
+        closeModal('hamburger')
         openModal('settings')
         break
       case 'dark-mode':
         toggleDarkMode()
+        // Don't close hamburger for dark mode toggle
         break
       case 'help':
-        // Handle help
+        // Handle help - don't close hamburger
         break
       default:
         break

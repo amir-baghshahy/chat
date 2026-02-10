@@ -48,6 +48,7 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     privacy: false,
     chatSettings: false,
     myAccount: false,
+    folders: false,
     chat: false,
   })
 
@@ -254,6 +255,62 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     return emoji
   }, [])
 
+  // Chat actions
+  const pinChat = useCallback((chatId: number) => {
+    const chat = chatsData.find(c => c.id === chatId)
+    if (!chat) return
+
+    chat.isPinned = !chat.isPinned
+    showToast(
+      chat.isPinned ? 'Pinned' : 'Unpinned',
+      `${chat.name} has been ${chat.isPinned ? 'pinned' : 'unpinned'}`,
+      'success'
+    )
+  }, [showToast])
+
+  const muteChat = useCallback((chatId: number) => {
+    const chat = chatsData.find(c => c.id === chatId)
+    if (!chat) return
+
+    chat.muted = !chat.muted
+    showToast(
+      chat.muted ? 'Muted' : 'Unmuted',
+      `Notifications for ${chat.name} have been ${chat.muted ? 'disabled' : 'enabled'}`,
+      'success'
+    )
+  }, [showToast])
+
+  const deleteChat = useCallback((chatId: number) => {
+    const chatIndex = chatsData.findIndex(c => c.id === chatId)
+    if (chatIndex === -1) return
+
+    const chat = chatsData[chatIndex]
+    chatsData.splice(chatIndex, 1)
+
+    // If current chat was deleted, go back
+    if (currentChat?.id === chatId) {
+      goBack()
+    }
+
+    showToast('Deleted', `${chat.name} chat has been deleted`, 'error')
+  }, [currentChat, goBack, showToast])
+
+  const clearChatHistory = useCallback((chatId: number) => {
+    const chat = chatsData.find(c => c.id === chatId)
+    if (!chat) return
+
+    chat.messages = []
+    chat.lastMessage = ''
+    chat.unread = 0
+
+    // Update current chat messages if it's the open chat
+    if (currentChat?.id === chatId) {
+      setMessages([])
+    }
+
+    showToast('Cleared', `Chat history with ${chat.name} has been cleared`, 'success')
+  }, [currentChat, showToast])
+
   // Filtered data
   const filteredChats = searchQuery
     ? chatsData.filter(chat =>
@@ -338,6 +395,10 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     cancelEdit,
     startForward,
     forwardMessageToChat,
+    pinChat,
+    muteChat,
+    deleteChat,
+    clearChatHistory,
     toggleMemberSelection,
     showToast,
     startCall,

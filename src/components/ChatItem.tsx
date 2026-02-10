@@ -9,7 +9,7 @@ interface ChatItemProps {
 }
 
 export function ChatItem({ chat, isActive }: ChatItemProps) {
-  const { openChat, showToast } = useTelegram()
+  const { openChat, pinChat, muteChat, deleteChat, clearChatHistory } = useTelegram()
   const [showContextMenu, setShowContextMenu] = useState(false)
   const [contextMenuPos, setContextMenuPos] = useState({ x: 0, y: 0 })
   const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -57,21 +57,21 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
     setShowContextMenu(false)
     switch (action) {
       case 'pin':
-        showToast('Pinned', `${chat.name} has been pinned`, 'success')
+        pinChat(chat.id)
         break
       case 'mute':
-        showToast('Muted', `${chat.name} has been muted`, 'success')
+        muteChat(chat.id)
         break
       case 'clear-history':
-        showToast('Cleared', `Chat history with ${chat.name} has been cleared`, 'success')
+        clearChatHistory(chat.id)
         break
       case 'delete':
-        showToast('Deleted', `${chat.name} chat has been deleted`, 'error')
+        deleteChat(chat.id)
         break
       default:
         break
     }
-  }, [chat, showToast])
+  }, [chat.id, pinChat, muteChat, deleteChat, clearChatHistory])
 
   return (
     <>
@@ -99,12 +99,31 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
       </div>
       <div className="flex-1 min-w-0 flex flex-col gap-0.5 sm:gap-1">
         <div className="flex justify-between items-center gap-2">
-          <span className="text-[14px] sm:text-[15px] font-semibold text-[var(--tg-text-primary)] truncate">{chat.name}</span>
-          <span className="text-[11px] sm:text-[12px] text-[var(--tg-text-tertiary)] flex-shrink-0">{chat.time}</span>
+          <div className="flex items-center gap-1.5 min-w-0">
+            {chat.isPinned && (
+              <i className="fas fa-thumbtack text-[10px] sm:text-[11px] text-[var(--tg-blue)] flex-shrink-0"></i>
+            )}
+            <span className="text-[14px] sm:text-[15px] font-semibold text-[var(--tg-text-primary)] truncate">{chat.name}</span>
+            {chat.isGroup && (
+              <span className="text-[10px] sm:text-[11px] text-[var(--tg-text-tertiary)] bg-[color:var(--tg-bg-secondary)] px-1.5 py-0.5 rounded flex-shrink-0">group</span>
+            )}
+            {!chat.isGroup && !chat.isSaved && (
+              <span className="text-[10px] sm:text-[11px] text-[var(--tg-text-tertiary)] bg-[color:var(--tg-bg-secondary)] px-1.5 py-0.5 rounded flex-shrink-0">pv</span>
+            )}
+          </div>
+          <div className="flex items-center gap-1.5 flex-shrink-0">
+            {chat.muted && (
+              <i className="fas fa-bell-slash text-[11px] sm:text-[12px] text-[var(--tg-text-tertiary)]"></i>
+            )}
+            <span className="text-[11px] sm:text-[12px] text-[var(--tg-text-tertiary)]">{chat.time}</span>
+          </div>
         </div>
         <div className="flex justify-between items-center gap-2">
-          <span className="text-[13px] sm:text-[14px] text-[var(--tg-text-secondary)] truncate flex-1 min-w-0">{chat.lastMessage}</span>
-          {chat.unread > 0 && (
+          <span className={clsx(
+            'text-[13px] sm:text-[14px] truncate flex-1 min-w-0',
+            chat.muted ? 'text-[var(--tg-text-tertiary)]' : 'text-[var(--tg-text-secondary)]'
+          )}>{chat.lastMessage}</span>
+          {chat.unread > 0 && !chat.muted && (
             <span className="bg-[color:var(--tg-blue)] text-white text-[10px] sm:text-[11px] font-semibold px-1 sm:px-1.5 py-0.5 rounded-full min-w-[18px] sm:min-w-[20px] text-center flex-shrink-0">
               {chat.unread > 99 ? '99+' : chat.unread}
             </span>

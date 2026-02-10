@@ -18,6 +18,9 @@ export function SettingsModal() {
       case 'chat-settings':
         openModal('chatSettings')
         break
+      case 'folders':
+        openModal('folders')
+        break
       default:
         break
     }
@@ -33,20 +36,15 @@ export function SettingsModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
+          <button
+            className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg hover:bg-[color:var(--tg-hover)] rounded-full mr-2"
+            onClick={() => closeModal('settings')}
+          >
+            <i className="fas fa-arrow-left"></i>
+          </button>
           <h2 className="text-[18px] font-medium text-[var(--tg-text-primary)] flex-1">
             Settings
           </h2>
-          <div className="flex items-center gap-4">
-            <button className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg">
-              <i className="fas fa-ellipsis-vertical"></i>
-            </button>
-            <button
-              className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg"
-              onClick={() => closeModal('settings')}
-            >
-              <i className="fas fa-times"></i>
-            </button>
-          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-0 max-h-[80vh] bg-[color:var(--tg-bg)] modal-scrollable">
@@ -76,12 +74,10 @@ export function SettingsModal() {
             <SettingsItem icon="fa-bell" label="Notifications and Sounds" onClick={() => {}} />
             <SettingsItem icon="fa-lock" label="Privacy and Security" onClick={() => handleAction('privacy')} />
             <SettingsItem icon="fa-comment-dots" label="Chat Settings" onClick={() => handleAction('chat-settings')} />
-            <SettingsItem icon="fa-folder" label="Folders" onClick={() => {}} />
+            <SettingsItem icon="fa-folder" label="Folders" onClick={() => handleAction('folders')} />
             <SettingsItem icon="fa-sliders" label="Advanced" onClick={() => {}} />
             <SettingsItem icon="fa-microphone-lines" label="Speakers and Camera" onClick={() => {}} />
             <SettingsItem icon="fa-battery-three-quarters" label="Battery and Animations" onClick={() => {}} />
-            <SettingsItem icon="fa-globe" label="Language" badge="English" onClick={() => {}} />
-            <SettingsItem icon="fa-circle-question" label="Telegram FAQ" onClick={() => {}} />
           </div>
         </div>
       </div>

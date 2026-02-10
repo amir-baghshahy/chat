@@ -30,6 +30,7 @@ export const chatsData: Chat[] = [
     time: '12:30',
     unread: 2,
     online: true,
+    isPinned: true,
     messages: [
       { id: 1, text: 'Hey there!', time: '12:25', outgoing: true, status: 'read' },
       { id: 2, type: 'image', url: 'https://picsum.photos/400/300?random=1', text: 'Check out this photo!', time: '12:30', outgoing: false }
@@ -43,6 +44,8 @@ export const chatsData: Chat[] = [
     time: '11:45',
     unread: 5,
     online: false,
+    isGroup: true,
+    muted: true,
     messages: [
       { id: 1, text: 'Hello everyone', time: '11:30', outgoing: false },
       { id: 2, text: 'Hi!', time: '11:35', outgoing: true, status: 'read' },
@@ -71,6 +74,8 @@ export const chatsData: Chat[] = [
     time: '09:00',
     unread: 0,
     online: false,
+    isGroup: true,
+    muted: true,
     messages: [
       { id: 1, text: 'Breaking news: Today major changes happened in the tech world...', time: '09:00', outgoing: false }
     ]
@@ -84,6 +89,7 @@ export const chatsData: Chat[] = [
     time: 'Yesterday',
     unread: 0,
     online: false,
+    muted: true,
     messages: [
       { id: 1, text: 'Free tomorrow?', time: '18:00', outgoing: false },
       { id: 2, text: 'Yeah, what time?', time: '18:05', outgoing: true, status: 'read' },
@@ -98,6 +104,8 @@ export const chatsData: Chat[] = [
     time: 'Yesterday',
     unread: 12,
     online: false,
+    isGroup: true,
+    isPinned: true,
     messages: [
       { id: 1, type: 'image', url: 'https://picsum.photos/400/300?random=4', text: 'Anyone free Friday?', time: '15:00', outgoing: false },
       { id: 2, text: 'Let\'s grab dinner', time: '15:30', outgoing: false }
@@ -125,6 +133,8 @@ export const chatsData: Chat[] = [
     time: 'Monday',
     unread: 0,
     online: false,
+    isGroup: true,
+    muted: true,
     messages: [
       { id: 1, text: 'New system login detected', time: '09:00', outgoing: false }
     ]
@@ -138,6 +148,7 @@ export const chatsData: Chat[] = [
     time: 'Recently',
     unread: 0,
     online: false,
+    isPinned: true,
     messages: [
       { id: 1, text: 'My important notes and saved messages', time: '10:00', outgoing: true, status: 'read' },
       { id: 2, type: 'image', url: 'https://picsum.photos/400/300?random=5', text: 'Saved photo', time: '11:00', outgoing: true, status: 'read' }
