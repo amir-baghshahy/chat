@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react'
 import { chatsData } from '../data'
-import type { Message, Chat } from '../types'
+import type { Message, Chat, ModalName } from '../types'
 
 interface MessageHooksProps {
   currentChat: Chat | null
   setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void
-  openModal: (modalName: string) => void
+  openModal: (modalName: ModalName) => void
 }
 
 export function useMessageHooks({ currentChat, setMessages, openModal }: MessageHooksProps) {

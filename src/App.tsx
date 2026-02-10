@@ -13,8 +13,8 @@ import { MyAccountModal } from './components/modals/MyAccountModal'
 import { ChatSettingsModal } from './components/modals/ChatSettingsModal'
 import { FoldersModal } from './components/modals/FoldersModal'
 import { ToastContainer } from './components/ToastContainer'
-import { useTelegram } from './contexts/TelegramContext'
-import { TelegramProvider } from './contexts/TelegramContext'
+import { useTelegram } from './context/TelegramContext'
+import { TelegramProvider } from './context/TelegramContext'
 
 function AppContent() {
   const {

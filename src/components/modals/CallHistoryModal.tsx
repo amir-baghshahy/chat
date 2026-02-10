@@ -1,4 +1,4 @@
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { callHistoryData } from '../../data'
 
 export function CallHistoryModal() {

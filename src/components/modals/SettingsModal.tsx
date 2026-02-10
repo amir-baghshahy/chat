@@ -1,25 +1,24 @@
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { currentUser } from '../../data'
 
 export function SettingsModal() {
-  const { modals, closeModal, openModal, goBackModal } = useTelegram()
+  const { modals, closeModal, navigateSettings } = useTelegram()
 
   if (!modals.settings) return null
 
   const handleAction = (action: string) => {
-    closeModal('settings')
     switch (action) {
       case 'my-account':
-        openModal('myAccount')
+        navigateSettings('settings', 'myAccount')
         break
       case 'privacy':
-        openModal('privacy')
+        navigateSettings('settings', 'privacy')
         break
       case 'chat-settings':
-        openModal('chatSettings')
+        navigateSettings('settings', 'chatSettings')
         break
       case 'folders':
-        openModal('folders')
+        navigateSettings('settings', 'folders')
         break
       default:
         break
@@ -38,7 +37,7 @@ export function SettingsModal() {
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
           <button
             className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg hover:bg-[color:var(--tg-hover)] rounded-full mr-2"
-            onClick={goBackModal}
+            onClick={() => closeModal('settings')}
           >
             <i className="fas fa-arrow-left"></i>
           </button>

@@ -1,4 +1,4 @@
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { chatsData } from '../../data'
 import type { Contact } from '../../types'
 

@@ -1,4 +1,4 @@
-import { useTelegram } from '../contexts/TelegramContext'
+import { useTelegram } from '../context/TelegramContext'
 
 export function ChatHeader() {
   const { currentChat, openModal, closeModal, modals } = useTelegram()

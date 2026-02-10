@@ -1,4 +1,4 @@
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { useState, useEffect } from 'react'
 
 export function CallScreenModal() {

@@ -139,6 +139,8 @@ export interface TelegramContextType {
   openModal: (modal: ModalName) => void
   closeModal: (modal: ModalName) => void
   goBackModal: () => void
+  navigateSettings: (fromModal: ModalName, toModal: ModalName) => void
+  goBackSettings: (currentModal: ModalName) => void
   openChat: (chatId: number) => void
   goBack: () => void
   sendMessage: (text: string) => void

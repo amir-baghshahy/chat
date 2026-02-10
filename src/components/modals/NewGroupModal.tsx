@@ -1,4 +1,4 @@
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 
 export function NewGroupModal() {
   const { modals, closeModal, filteredMembers, toggleMemberSelection, selectedMembers, showToast } = useTelegram()

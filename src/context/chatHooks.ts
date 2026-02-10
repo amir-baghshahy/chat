@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import { chatsData } from '../data'
-import type { Chat, Message } from '../types'
+import type { Chat, Message, ModalName } from '../types'
 
 interface ChatHooksProps {
   currentChat: Chat | null
   setCurrentChat: (chat: Chat | null) => void
   setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void
-  closeModal: (modalName: string) => void
+  closeModal: (modalName: ModalName) => void
   goBack: () => void
   showToast?: (title: string, message: string, type: string) => void
 }

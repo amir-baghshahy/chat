@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useTelegram } from '../contexts/TelegramContext'
+import { useTelegram } from '../context/TelegramContext'
 import { EmojiPicker } from './EmojiPicker'
 import { ReplyPreview } from './ReplyPreview'
 

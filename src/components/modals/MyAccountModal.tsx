@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { currentUser } from '../../data'
 
 type TabType = 'profile' | 'info' | 'edit'
 
 export function MyAccountModal() {
-  const { modals, closeModal, goBackModal } = useTelegram()
+  const { modals, goBackSettings } = useTelegram()
   const [activeTab, setActiveTab] = useState<TabType>('profile')
 
   if (!modals.myAccount) return null
@@ -13,17 +13,17 @@ export function MyAccountModal() {
   return (
     <div
       className="modal-overlay fixed inset-0 bg-[color:var(--tg-overlay)] flex items-center justify-center z-[10000] animate-fade-in"
-      onClick={() => closeModal('myAccount')}
+      onClick={() => goBackSettings('myAccount')}
     >
       <div
-        className="modal-content bg-[color:var(--tg-bg-secondary)] rounded-lg w-[90%] max-w-[400px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
+        className="modal-content bg-[color:var(--tg-bg-secondary)] rounded-lg w-[90%] max-w-[380px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
           <button
             className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg hover:bg-[color:var(--tg-hover)] rounded-full mr-2"
-            onClick={goBackModal}
+            onClick={() => goBackSettings('myAccount')}
           >
             <i className="fas fa-arrow-left"></i>
           </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTelegram } from '../../contexts/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import type { Chat } from '../../types'
 
 export function ProfileModal() {

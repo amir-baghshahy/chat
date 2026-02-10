@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
-import { useTelegram } from '../contexts/TelegramContext'
+import { useTelegram } from '../context/TelegramContext'
 import { clsx } from 'clsx'
 import type { Chat } from '../types'
 

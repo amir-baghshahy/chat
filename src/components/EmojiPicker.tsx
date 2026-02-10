@@ -1,4 +1,4 @@
-import { useTelegram } from '../contexts/TelegramContext'
+import { useTelegram } from '../context/TelegramContext'
 
 const EMOJI_CATEGORIES = [
   { key: 'smileys', icon: '😀' },

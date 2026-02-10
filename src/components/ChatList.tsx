@@ -1,5 +1,5 @@
 import { ChatItem } from './ChatItem'
-import { useTelegram } from '../contexts/TelegramContext'
+import { useTelegram } from '../context/TelegramContext'
 
 export function ChatList() {
   const { filteredChats, currentChat } = useTelegram()
