@@ -21,11 +21,11 @@ export function SearchInput({ context = 'chats' }: SearchInputProps) {
 
   return (
     <div className="flex-1 flex items-center bg-[color:var(--tg-bg-secondary)] rounded-[22px] px-4 py-2 gap-2">
-      <i className="fas fa-search text-[color:var(--tg-text-tertiary)] text-sm"></i>
+      <i className="fas fa-search text-[var(--tg-text-tertiary)] text-sm"></i>
       <input
         type="text"
         placeholder="Search..."
-        className="flex-1 border-none bg-transparent outline-none text-[15px] text-[color:var(--tg-text-primary)] placeholder:text-[color:var(--tg-text-tertiary)]"
+        className="flex-1 border-none bg-transparent outline-none text-[15px] text-[var(--tg-text-primary)] placeholder:text-[var(--tg-text-tertiary)]"
         value={getValue()}
         onChange={handleChange}
       />

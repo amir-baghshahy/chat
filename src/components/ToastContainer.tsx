@@ -26,7 +26,7 @@ export function ToastContainer() {
       case 'warning':
         return 'text-yellow-500'
       default:
-        return 'text-[color:var(--tg-blue)]'
+        return 'text-[var(--tg-blue)]'
     }
   }
 
@@ -39,11 +39,11 @@ export function ToastContainer() {
         >
           <i className={clsx('fas text-xl', getIcon(toast.type), getColor(toast.type))}></i>
           <div className="flex-1">
-            <div className="text-[15px] font-semibold text-[color:var(--tg-text-primary)]">
+            <div className="text-[15px] font-semibold text-[var(--tg-text-primary)]">
               {toast.title}
             </div>
             {toast.message && (
-              <div className="text-[13px] text-[color:var(--tg-text-secondary)] mt-0.5">
+              <div className="text-[13px] text-[var(--tg-text-secondary)] mt-0.5">
                 {toast.message}
               </div>
             )}

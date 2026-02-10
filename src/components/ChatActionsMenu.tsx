@@ -10,6 +10,9 @@ export function ChatActionsMenu() {
       case 'view-profile':
         openModal('profile')
         break
+      case 'search':
+        // Handle search
+        break
       case 'mute-notifications':
         // Handle mute
         break
@@ -40,41 +43,41 @@ export function ChatActionsMenu() {
   if (!modals.chatActions) return null
 
   return (
-    <div className="chat-actions-menu absolute top-15 right-2 sm:right-5 bg-[color:var(--tg-bg)] rounded-lg shadow-[0_4px_16px_var(--tg-shadow)] min-w-[200px] sm:min-w-[220px] z-[1000] hidden overflow-hidden animate-menu-fade block">
+    <div className="chat-actions-menu fixed top-12 sm:top-14 right-2 sm:right-4 bg-[color:var(--tg-bg)] rounded-lg shadow-[0_4px_16px_var(--tg-shadow)] min-w-[180px] sm:min-w-[200px] z-[1001] overflow-hidden">
       <div
-        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[color:var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
+        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('view-profile')}
       >
-        <i className="w-5 text-[color:var(--tg-text-secondary)] text-center">👤</i>
+        <i className="fas fa-user text-[var(--tg-text-secondary)] text-center w-5"></i>
         <span>View Profile</span>
       </div>
       <div
-        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[color:var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
+        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('search')}
       >
-        <i className="w-5 text-[color:var(--tg-text-secondary)] text-center">🔍</i>
+        <i className="fas fa-search text-[var(--tg-text-secondary)] text-center w-5"></i>
         <span>Search</span>
       </div>
       <div className="h-px bg-[color:var(--tg-border)] my-1"></div>
       <div
-        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[color:var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
+        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('mute-notifications')}
       >
-        <i className="w-5 text-[color:var(--tg-text-secondary)] text-center">🔕</i>
+        <i className="fas fa-bell-slash text-[var(--tg-text-secondary)] text-center w-5"></i>
         <span>Mute Notifications</span>
       </div>
       <div
-        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[color:var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
+        className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('clear-history')}
       >
-        <i className="w-5 text-[color:var(--tg-text-secondary)] text-center">🧹</i>
+        <i className="fas fa-broom text-[var(--tg-text-secondary)] text-center w-5"></i>
         <span>Clear History</span>
       </div>
       <div
         className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-red-500 hover:bg-[color:var(--tg-hover)]"
         onClick={() => handleAction('delete-chat')}
       >
-        <i className="w-5 text-center">🗑️</i>
+        <i className="fas fa-trash text-center w-5"></i>
         <span>Delete Chat</span>
       </div>
     </div>

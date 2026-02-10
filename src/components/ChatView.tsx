@@ -5,7 +5,7 @@ import { ChatActionsMenu } from './ChatActionsMenu'
 
 export function ChatView() {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full relative">
       <ChatHeader />
       <MessageList />
       <MessageInput />

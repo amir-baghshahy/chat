@@ -73,6 +73,7 @@ export type ModalName =
   | 'newGroup'
   | 'contacts'
   | 'callHistory'
+  | 'callScreen'
   | 'forward'
   | 'hamburger'
   | 'chatActions'
@@ -141,6 +142,7 @@ export interface TelegramContextType {
   startEdit: (message: Message) => void
   cancelEdit: () => void
   startForward: (message: Message) => void
+  forwardMessageToChat: (message: Message, chatId: number, fromChatName: string) => void
   toggleMemberSelection: (memberId: number) => void
   showToast: (title: string, message: string, type?: ToastType, duration?: number) => void
   startCall: (chat: Chat, isVideo?: boolean) => void

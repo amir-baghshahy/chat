@@ -40,7 +40,7 @@ export function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
           ))}
         </div>
         <button
-          className="bg-transparent border-none text-[color:var(--tg-text-secondary)] cursor-pointer p-2 rounded-full transition-colors hover:bg-[color:var(--tg-hover)]"
+          className="bg-transparent border-none text-[var(--tg-text-secondary)] cursor-pointer p-2 rounded-full transition-colors hover:bg-[color:var(--tg-hover)]"
           onClick={() => setShowEmojiPicker(false)}
         >
           <i className="fas fa-times text-lg"></i>
@@ -51,7 +51,7 @@ export function EmojiPicker({ onEmojiSelect }: EmojiPickerProps) {
         <input
           type="text"
           placeholder="Search emoji..."
-          className="w-full px-3 py-2 border border-[color:var(--tg-border)] rounded-lg bg-[color:var(--tg-bg-secondary)] text-[color:var(--tg-text-primary)] text-[14px] outline-none transition-colors focus:border-[color:var(--tg-blue)]"
+          className="w-full px-3 py-2 border border-[color:var(--tg-border)] rounded-lg bg-[color:var(--tg-bg-secondary)] text-[var(--tg-text-primary)] text-[14px] outline-none transition-colors focus:border-[color:var(--tg-blue)]"
           value={emojiSearchQuery}
           onChange={(e) => setEmojiSearchQuery(e.target.value)}
         />

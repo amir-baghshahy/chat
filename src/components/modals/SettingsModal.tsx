@@ -25,26 +25,23 @@ export function SettingsModal() {
 
   return (
     <div
-      className="fixed inset-0 bg-[color:var(--tg-overlay)] flex items-center justify-center z-[10000] animate-fade-in"
+      className="modal-overlay fixed inset-0 bg-[color:var(--tg-overlay)] flex items-center justify-center z-[10000] animate-fade-in"
       onClick={() => closeModal('settings')}
     >
       <div
-        className="bg-[color:var(--tg-bg-secondary)] rounded-lg w-[90%] max-w-[380px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
+        className="modal-content bg-[color:var(--tg-bg-secondary)] rounded-lg w-[90%] max-w-[380px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="px-4 py-3 flex items-center justify-between bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
-          <h2 className="text-[18px] font-medium text-[color:var(--tg-text-primary)] text-center flex-1">
+        <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
+          <h2 className="text-[18px] font-medium text-[var(--tg-text-primary)] flex-1">
             Settings
           </h2>
           <div className="flex items-center gap-4">
-            <button className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[color:var(--tg-text-primary)] cursor-pointer text-lg">
-              <i className="fas fa-border-all"></i>
-            </button>
-            <button className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[color:var(--tg-text-primary)] cursor-pointer text-lg">
+            <button className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg">
               <i className="fas fa-ellipsis-vertical"></i>
             </button>
             <button
-              className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[color:var(--tg-text-primary)] cursor-pointer text-lg"
+              className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg"
               onClick={() => closeModal('settings')}
             >
               <i className="fas fa-times"></i>
@@ -61,13 +58,13 @@ export function SettingsModal() {
               className="w-20 h-20 rounded-full object-cover border-2 border-[color:var(--tg-text-primary)]"
             />
             <div className="flex flex-col gap-1">
-              <div className="text-[16px] font-semibold text-[color:var(--tg-text-primary)]">
+              <div className="text-[16px] font-semibold text-[var(--tg-text-primary)]">
                 {currentUser.firstName} {currentUser.lastName}
               </div>
-              <div className="text-[14px] text-[color:var(--tg-text-secondary)]">
+              <div className="text-[14px] text-[var(--tg-text-secondary)]">
                 {currentUser.phone}
               </div>
-              <div className="text-[14px] text-[color:var(--tg-text-tertiary)]">
+              <div className="text-[14px] text-[var(--tg-text-tertiary)]">
                 {currentUser.username}
               </div>
             </div>
@@ -105,9 +102,9 @@ function SettingsItem({ icon, label, badge, onClick }: SettingsItemProps) {
       className="flex items-center gap-4 px-4 py-3 cursor-pointer transition-colors relative hover:bg-[color:var(--tg-hover)]"
       onClick={onClick}
     >
-      <i className={`fas ${icon} text-xl text-[color:var(--tg-text-primary)] w-6 text-center`}></i>
-      <span className="text-[15px] text-[color:var(--tg-text-primary)] flex-1">{label}</span>
-      {badge && <span className="text-[14px] text-[color:var(--tg-blue)] ml-auto">{badge}</span>}
+      <i className={`fas ${icon} text-xl text-[var(--tg-text-primary)] w-6 text-center`}></i>
+      <span className="text-[15px] text-[var(--tg-text-primary)] flex-1">{label}</span>
+      {badge && <span className="text-[14px] text-[var(--tg-blue)] ml-auto">{badge}</span>}
     </div>
   )
 }

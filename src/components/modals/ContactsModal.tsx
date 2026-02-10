@@ -13,17 +13,17 @@ export function ContactsModal() {
 
   return (
     <div
-      className="fixed inset-0 bg-[color:var(--tg-overlay)] flex items-center justify-center z-[10000]"
+      className="modal-overlay fixed inset-0 bg-[color:var(--tg-overlay)] flex items-center justify-center z-[10000]"
       onClick={() => closeModal('contacts')}
     >
       <div
-        className="bg-[color:var(--tg-bg)] rounded-xl w-[90%] max-w-[500px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
+        className="modal-content bg-[color:var(--tg-bg)] rounded-xl w-[90%] max-w-[500px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-5 py-4 flex items-center justify-between border-b border-[color:var(--tg-border)]">
-          <h2 className="text-[18px] font-semibold">Contacts</h2>
+          <h2 className="text-[18px] font-semibold text-[var(--tg-text-primary)]">Contacts</h2>
           <button
-            className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[color:var(--tg-text-secondary)] cursor-pointer text-xl rounded-full transition-colors hover:bg-[color:var(--tg-hover)]"
+            className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-secondary)] cursor-pointer text-xl rounded-full transition-colors hover:bg-[color:var(--tg-hover)]"
             onClick={() => closeModal('contacts')}
           >
             <i className="fas fa-times"></i>
@@ -35,7 +35,7 @@ export function ContactsModal() {
             <input
               type="text"
               placeholder="Search contacts..."
-              className="w-full px-4 py-3 border border-[color:var(--tg-border)] rounded-lg bg-[color:var(--tg-bg)] text-[color:var(--tg-text-primary)] text-[15px] outline-none transition-colors focus:border-[color:var(--tg-blue)]"
+              className="w-full px-4 py-3 border border-[color:var(--tg-border)] rounded-lg bg-[color:var(--tg-bg)] text-[var(--tg-text-primary)] text-[15px] outline-none transition-colors focus:border-[color:var(--tg-blue)]"
             />
           </div>
 
@@ -53,8 +53,8 @@ export function ContactsModal() {
                   )}
                 </div>
                 <div className="flex-1">
-                  <div className="text-[15px] font-semibold text-[color:var(--tg-text-primary)]">{contact.name}</div>
-                  <div className="text-[13px] text-[color:var(--tg-text-tertiary)] mt-0.5">{contact.status}</div>
+                  <div className="text-[15px] font-semibold text-[var(--tg-text-primary)]">{contact.name}</div>
+                  <div className="text-[13px] text-[var(--tg-text-tertiary)] mt-0.5">{contact.status}</div>
                 </div>
               </div>
             ))}

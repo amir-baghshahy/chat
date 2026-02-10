@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { ChatArea } from './components/ChatArea'
 import { HamburgerMenu } from './components/HamburgerMenu'
@@ -7,6 +7,7 @@ import { ProfileModal } from './components/modals/ProfileModal'
 import { NewGroupModal } from './components/modals/NewGroupModal'
 import { ContactsModal } from './components/modals/ContactsModal'
 import { CallHistoryModal } from './components/modals/CallHistoryModal'
+import { CallScreenModal } from './components/modals/CallScreenModal'
 import { ForwardModal } from './components/modals/ForwardModal'
 import { ToastContainer } from './components/ToastContainer'
 import { useTelegram } from './contexts/TelegramContext'
@@ -19,6 +20,8 @@ function AppContent() {
     isMobile,
     modals,
     closeModal,
+    goBack,
+    openModal,
   } = useTelegram()
 
   useEffect(() => {
@@ -38,7 +41,7 @@ function AppContent() {
       {/* Hamburger Menu Overlay */}
       {modals.hamburger && (
         <div
-          className="fixed inset-0 bg-black/60 opacity-100 visible z-[9998] transition-opacity duration-300"
+          className="hamburger-overlay fixed inset-0 bg-black/60 opacity-100 visible z-[9998] transition-opacity duration-300"
           onClick={() => closeModal('hamburger')}
         />
       )}
@@ -50,23 +53,47 @@ function AppContent() {
       {isMobile && currentChat && (
         <header className="mobile-header flex items-center px-2 sm:px-4 h-12 sm:h-14 bg-[color:var(--tg-bg)] border-b border-[color:var(--tg-border)] fixed top-0 left-0 right-0 z-[1000]">
           <button
-            className="bg-transparent border-none text-[color:var(--tg-text-secondary)] cursor-pointer p-2 mr-1 sm:mr-2 flex-shrink-0"
-            onClick={() => closeModal('chat')}
+            className="bg-transparent border-none text-[var(--tg-text-secondary)] cursor-pointer p-2 mr-1 sm:mr-2 flex-shrink-0"
+            onClick={() => goBack()}
           >
             <i className="fas fa-arrow-left text-lg sm:text-xl"></i>
           </button>
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <img
-              src={currentChat.avatar}
-              alt={currentChat.name}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0"
-            />
-            <div className="min-w-0">
-              <h3 className="text-[15px] sm:text-[16px] font-semibold text-[color:var(--tg-text-primary)] truncate">{currentChat.name}</h3>
-              <p className="text-[12px] sm:text-[13px] text-[color:var(--tg-text-tertiary)] truncate">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+            <div
+              className="relative cursor-pointer"
+              onClick={() => openModal('profile')}
+            >
+              <img
+                src={currentChat.avatar}
+                alt={currentChat.name}
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0"
+              />
+              {currentChat.online && (
+                <div className="absolute bottom-0 right-0.5 w-2.5 h-2.5 bg-green-400 border-2 border-[color:var(--tg-bg)] rounded-full"></div>
+              )}
+            </div>
+            <div className="min-w-0" onClick={() => openModal('profile')}>
+              <h3 className="text-[15px] sm:text-[16px] font-semibold text-[var(--tg-text-primary)] truncate">{currentChat.name}</h3>
+              <p className="text-[12px] sm:text-[13px] text-[var(--tg-text-tertiary)] truncate">
                 {currentChat.online ? 'online' : 'last seen recently'}
               </p>
             </div>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-3 ml-2 sm:ml-3">
+            <button
+              className="bg-transparent border-none text-[var(--tg-text-secondary)] cursor-pointer p-2 flex-shrink-0 transition-colors hover:bg-[color:var(--tg-hover)] hover:text-[var(--tg-blue)] rounded-full"
+              onClick={() => openModal('callScreen')}
+              title="Call"
+            >
+              <i className="fas fa-phone text-lg sm:text-xl"></i>
+            </button>
+            <button
+              className="bg-transparent border-none text-[var(--tg-text-secondary)] cursor-pointer p-2 flex-shrink-0 transition-colors hover:bg-[color:var(--tg-hover)] hover:text-[var(--tg-blue)] rounded-full"
+              onClick={() => openModal('chatActions')}
+              data-action="more-options"
+            >
+              <i className="fas fa-ellipsis-v text-lg sm:text-xl"></i>
+            </button>
           </div>
         </header>
       )}
@@ -83,6 +110,7 @@ function AppContent() {
       {modals.newGroup && <NewGroupModal />}
       {modals.contacts && <ContactsModal />}
       {modals.callHistory && <CallHistoryModal />}
+      {modals.callScreen && <CallScreenModal />}
       {modals.forward && <ForwardModal />}
 
       {/* Toast Notifications */}

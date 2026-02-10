@@ -41,6 +41,7 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     newGroup: false,
     contacts: false,
     callHistory: false,
+    callScreen: false,
     forward: false,
     hamburger: false,
     chatActions: false,
@@ -197,6 +198,42 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     }, duration)
   }, [])
 
+  const forwardMessageToChat = useCallback((message: Message, chatId: number, fromChatName: string) => {
+    const targetChat = chatsData.find(c => c.id === chatId)
+    if (!targetChat) return
+
+    // Open the target chat and add the forwarded message
+    setCurrentChat(targetChat)
+    closeModal('forward')
+
+    const forwardedMessage: Message = {
+      id: Date.now(),
+      text: message.text,
+      type: message.type,
+      url: message.url,
+      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+      outgoing: true,
+      status: 'sent',
+      forwardedFrom: fromChatName,
+    }
+
+    // Add message to the target chat
+    if (!targetChat.messages) {
+      targetChat.messages = []
+    }
+    targetChat.messages.push(forwardedMessage)
+    setMessages(targetChat.messages)
+
+    // Update chat's last message
+    const chatIndex = chatsData.findIndex(c => c.id === chatId)
+    if (chatIndex !== -1) {
+      chatsData[chatIndex].lastMessage = (message.text || 'Media') + ' (forwarded)'
+      chatsData[chatIndex].time = forwardedMessage.time
+    }
+
+    showToast('Forwarded', `Message forwarded to ${targetChat.name}`, 'success')
+  }, [closeModal, showToast])
+
   // Call functions
   const startCall = useCallback((chat: Chat, isVideo = false) => {
     setActiveCall(chat)
@@ -300,6 +337,7 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     startEdit,
     cancelEdit,
     startForward,
+    forwardMessageToChat,
     toggleMemberSelection,
     showToast,
     startCall,
