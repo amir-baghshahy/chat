@@ -16,7 +16,7 @@ export function NewGroupModal() {
       return
     }
 
-    showToast('Group Created', `Group: ${groupName} with ${selectedMembers.size} members`, 'success')
+    // TODO: Backend - Create group API call
     closeModal('newGroup')
   }
 
@@ -62,8 +62,8 @@ export function NewGroupModal() {
                   `}
                   onClick={() => toggleMemberSelection(member.id)}
                 >
-                  <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-full object-cover" />
-                  <span className="flex-1 text-[15px] text-[var(--tg-text-primary)]">{member.name}</span>
+                  <img src={member.avatar} alt={member.name} className="w-10 h-10 rounded-full object-cover flex-shrink-0" loading="lazy" />
+                  <span className="flex-1 min-w-0 text-[15px] text-[var(--tg-text-primary)] truncate">{member.name}</span>
                   <div
                     className={`w-5 h-5 border-2 rounded-full flex items-center justify-center
                       ${selectedMembers.has(member.id) ? 'bg-[color:var(--tg-blue)] border-[color:var(--tg-blue)]' : 'border-[color:var(--tg-text-tertiary)]'}

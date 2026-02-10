@@ -48,8 +48,9 @@ export function ProfileModal() {
               src={chat.avatar}
               alt="Profile"
               className="w-[100px] h-[100px] rounded-full object-cover border-2 border-[color:var(--tg-text-primary)] mb-4"
+              loading="lazy"
             />
-            <h3 className="text-[20px] font-semibold text-[var(--tg-text-primary)] mb-2 text-center">
+            <h3 className="text-[18px] sm:text-[20px] font-semibold text-[var(--tg-text-primary)] mb-2 text-center px-2 break-words">
               {displayName}
             </h3>
             <p className="text-[14px] text-[var(--tg-text-secondary)] mb-0 text-center italic">
@@ -118,13 +119,13 @@ interface ProfileInfoItemProps {
 
 function ProfileInfoItem({ icon, label, value }: ProfileInfoItemProps) {
   return (
-    <div className="flex items-center gap-4 px-4 py-3 border-b border-[color:var(--tg-border)] last:border-b-0">
+    <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 border-b border-[color:var(--tg-border)] last:border-b-0">
       <div className="w-9 h-9 bg-[color:var(--tg-bg)] rounded-full flex items-center justify-center text-[var(--tg-text-primary)] flex-shrink-0 text-base">
         <i className={`fas ${icon}`}></i>
       </div>
-      <div className="flex-1">
-        <div className="text-[13px] text-[var(--tg-text-secondary)] mb-1">{label}</div>
-        <div className="text-[15px] text-[var(--tg-text-primary)] font-medium">{value}</div>
+      <div className="flex-1 min-w-0">
+        <div className="text-[12px] sm:text-[13px] text-[var(--tg-text-secondary)] mb-1 truncate">{label}</div>
+        <div className="text-[14px] sm:text-[15px] text-[var(--tg-text-primary)] font-medium break-words">{value}</div>
       </div>
     </div>
   )
@@ -137,9 +138,9 @@ interface ProfileMediaItemProps {
 
 function ProfileMediaItem({ icon, label }: ProfileMediaItemProps) {
   return (
-    <div className="flex items-center gap-4 px-4 py-3 border-b border-[color:var(--tg-border)] cursor-pointer last:border-b-0 hover:bg-[color:var(--tg-hover)]">
-      <i className={`fas ${icon} text-xl text-[var(--tg-text-primary)] w-6`}></i>
-      <span className="text-[15px] text-[var(--tg-text-primary)]">{label}</span>
+    <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 border-b border-[color:var(--tg-border)] cursor-pointer last:border-b-0 hover:bg-[color:var(--tg-hover)]">
+      <i className={`fas ${icon} text-xl text-[var(--tg-text-primary)] w-6 flex-shrink-0`}></i>
+      <span className="text-[14px] sm:text-[15px] text-[var(--tg-text-primary)] break-words">{label}</span>
     </div>
   )
 }

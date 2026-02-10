@@ -17,7 +17,7 @@ export const callHistoryData: CallHistory[] = [
   { id: 2, name: 'Mary Johnson', avatar: 'https://i.pravatar.cc/150?img=3', type: 'outgoing', duration: '12:45', time: 'Today 10:20', missed: false },
   { id: 3, name: 'David Wilson', avatar: 'https://i.pravatar.cc/150?img=5', type: 'incoming', duration: '0:00', time: 'Yesterday 18:00', missed: true },
   { id: 4, name: 'Sarah Davis', avatar: 'https://i.pravatar.cc/150?img=7', type: 'video', duration: '3:10', time: 'Monday 15:30', missed: false },
-  { id: 5, name: 'Developers Group', avatar: 'https://i.pravatar.cc/150?img=2', type: 'outgoing', duration: '25:00', time: 'Monday 11:00', missed: false }
+  { id: 5, name: 'Alice Brown', avatar: 'https://i.pravatar.cc/150?img=11', type: 'outgoing', duration: '25:00', time: 'Monday 11:00', missed: false }
 ]
 
 export const chatsData: Chat[] = [
@@ -33,27 +33,13 @@ export const chatsData: Chat[] = [
     isPinned: true,
     messages: [
       { id: 1, text: 'Hey there!', time: '12:25', outgoing: true, status: 'read' },
-      { id: 2, type: 'image', url: 'https://picsum.photos/400/300?random=1', text: 'Check out this photo!', time: '12:30', outgoing: false }
+      { id: 2, type: 'image', url: 'https://picsum.photos/400/300?random=1', text: 'Check out this photo!', time: '12:30', outgoing: false },
+      { id: 3, text: 'That looks amazing! Where did you take it?', time: '12:32', outgoing: true, status: 'read' },
+      { id: 4, text: 'Thanks! It was at the beach last weekend', time: '12:35', outgoing: false },
     ]
   },
   {
     id: 2,
-    name: 'Developers Group',
-    avatar: 'https://i.pravatar.cc/150?img=2',
-    lastMessage: 'Sarah: Great tutorial video!',
-    time: '11:45',
-    unread: 5,
-    online: false,
-    isGroup: true,
-    muted: true,
-    messages: [
-      { id: 1, text: 'Hello everyone', time: '11:30', outgoing: false },
-      { id: 2, text: 'Hi!', time: '11:35', outgoing: true, status: 'read' },
-      { id: 3, type: 'video', url: 'https://picsum.photos/400/300?random=2', text: 'Great tutorial video!', time: '11:45', outgoing: false }
-    ]
-  },
-  {
-    id: 3,
     name: 'Mary Johnson',
     username: '@maryj',
     avatar: 'https://i.pravatar.cc/150?img=3',
@@ -63,25 +49,12 @@ export const chatsData: Chat[] = [
     online: true,
     messages: [
       { id: 1, type: 'image', url: 'https://picsum.photos/400/300?random=3', text: 'I sent the file', time: '10:15', outgoing: true, status: 'read' },
-      { id: 2, text: 'Thanks a lot', time: '10:20', outgoing: false }
+      { id: 2, text: 'Thanks a lot', time: '10:20', outgoing: false },
+      { id: 3, text: 'You\'re welcome! Let me know if you need anything else', time: '10:22', outgoing: true, status: 'read' },
     ]
   },
   {
-    id: 4,
-    name: 'News Channel',
-    avatar: 'https://i.pravatar.cc/150?img=4',
-    lastMessage: 'Breaking news:...',
-    time: '09:00',
-    unread: 0,
-    online: false,
-    isGroup: true,
-    muted: true,
-    messages: [
-      { id: 1, text: 'Breaking news: Today major changes happened in the tech world...', time: '09:00', outgoing: false }
-    ]
-  },
-  {
-    id: 5,
+    id: 3,
     name: 'David Wilson',
     username: '@davidw',
     avatar: 'https://i.pravatar.cc/150?img=5',
@@ -93,26 +66,11 @@ export const chatsData: Chat[] = [
     messages: [
       { id: 1, text: 'Free tomorrow?', time: '18:00', outgoing: false },
       { id: 2, text: 'Yeah, what time?', time: '18:05', outgoing: true, status: 'read' },
-      { id: 3, text: 'See you tomorrow', time: '18:10', outgoing: false }
+      { id: 3, text: 'See you tomorrow', time: '18:10', outgoing: false },
     ]
   },
   {
-    id: 6,
-    name: 'Friends Group',
-    avatar: 'https://i.pravatar.cc/150?img=6',
-    lastMessage: 'Mike: Let\'s grab dinner',
-    time: 'Yesterday',
-    unread: 12,
-    online: false,
-    isGroup: true,
-    isPinned: true,
-    messages: [
-      { id: 1, type: 'image', url: 'https://picsum.photos/400/300?random=4', text: 'Anyone free Friday?', time: '15:00', outgoing: false },
-      { id: 2, text: 'Let\'s grab dinner', time: '15:30', outgoing: false }
-    ]
-  },
-  {
-    id: 7,
+    id: 4,
     name: 'Sarah Davis',
     username: '@sarahd',
     avatar: 'https://i.pravatar.cc/150?img=7',
@@ -122,21 +80,52 @@ export const chatsData: Chat[] = [
     online: true,
     messages: [
       { id: 1, text: 'Did you finish the project?', time: '10:00', outgoing: true, status: 'read' },
-      { id: 2, text: 'Done 👍', time: '10:30', outgoing: false }
+      { id: 2, text: 'Done 👍', time: '10:30', outgoing: false },
+      { id: 3, text: 'Great work!', time: '10:31', outgoing: true, status: 'read' },
     ]
   },
   {
-    id: 8,
-    name: 'Tech Updates',
-    avatar: 'https://i.pravatar.cc/150?img=8',
-    lastMessage: 'New system login detected',
-    time: 'Monday',
+    id: 5,
+    name: 'Alice Brown',
+    username: '@aliceb',
+    avatar: 'https://i.pravatar.cc/150?img=11',
+    lastMessage: 'Sure, let\'s meet',
+    time: 'Sunday',
     unread: 0,
     online: false,
-    isGroup: true,
-    muted: true,
     messages: [
-      { id: 1, text: 'New system login detected', time: '09:00', outgoing: false }
+      { id: 1, text: 'Hey! Want to grab coffee sometime?', time: '14:00', outgoing: false },
+      { id: 2, text: 'Sure, let\'s meet', time: '14:05', outgoing: true, status: 'read' },
+      { id: 3, text: 'How about Saturday at 3pm?', time: '14:06', outgoing: false },
+    ]
+  },
+  {
+    id: 6,
+    name: 'Bob Taylor',
+    username: '@bobtaylor',
+    avatar: 'https://i.pravatar.cc/150?img=12',
+    lastMessage: 'Sounds good!',
+    time: 'Saturday',
+    unread: 0,
+    online: false,
+    messages: [
+      { id: 1, text: 'Can you review my code?', time: '09:00', outgoing: false },
+      { id: 2, text: 'Sure, send it over', time: '09:05', outgoing: true, status: 'read' },
+      { id: 3, text: 'Sounds good!', time: '09:10', outgoing: false },
+    ]
+  },
+  {
+    id: 7,
+    name: 'Charlie Miller',
+    username: '@charlie_m',
+    avatar: 'https://i.pravatar.cc/150?img=13',
+    lastMessage: 'See you then!',
+    time: 'Friday',
+    unread: 0,
+    online: true,
+    messages: [
+      { id: 1, text: 'Meeting at 5pm?', time: '11:00', outgoing: true, status: 'read' },
+      { id: 2, text: 'See you then!', time: '11:02', outgoing: false },
     ]
   },
   {
@@ -151,7 +140,8 @@ export const chatsData: Chat[] = [
     isPinned: true,
     messages: [
       { id: 1, text: 'My important notes and saved messages', time: '10:00', outgoing: true, status: 'read' },
-      { id: 2, type: 'image', url: 'https://picsum.photos/400/300?random=5', text: 'Saved photo', time: '11:00', outgoing: true, status: 'read' }
+      { id: 2, type: 'image', url: 'https://picsum.photos/400/300?random=5', text: 'Saved photo', time: '11:00', outgoing: true, status: 'read' },
+      { id: 3, text: 'Remember to call mom tomorrow', time: '12:00', outgoing: true, status: 'read' },
     ]
   }
 ]

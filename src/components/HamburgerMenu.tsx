@@ -2,7 +2,7 @@ import { useTelegram } from '../contexts/TelegramContext'
 import { currentUser } from '../data'
 
 export function HamburgerMenu() {
-  const { modals, closeModal, openModal, toggleDarkMode, isDarkMode } = useTelegram()
+  const { modals, closeModal, openModal, toggleDarkMode, isDarkMode, openChat } = useTelegram()
 
   if (!modals.hamburger) return null
 
@@ -21,7 +21,8 @@ export function HamburgerMenu() {
         openModal('callHistory')
         break
       case 'saved':
-        // Handle saved messages
+        closeModal('hamburger')
+        openChat(999) // Saved Messages chat id
         break
       case 'settings':
         closeModal('hamburger')
@@ -29,10 +30,9 @@ export function HamburgerMenu() {
         break
       case 'dark-mode':
         toggleDarkMode()
-        // Don't close hamburger for dark mode toggle
         break
       case 'help':
-        // Handle help - don't close hamburger
+        // Handle help
         break
       default:
         break
@@ -42,24 +42,24 @@ export function HamburgerMenu() {
   return (
     <>
       <aside
-        className={`hamburger-menu fixed top-0 h-screen w-full sm:w-[var(--hamburger-width)] bg-[color:var(--tg-bg)] shadow-[2px_0_8px_var(--tg-shadow)] transition-all duration-300 z-[9999] flex flex-col
-          ${modals.hamburger ? 'left-0' : '-left-full'}
-        `}
+        className={`hamburger-menu fixed top-0 h-screen w-full sm:w-[var(--hamburger-width)] bg-[color:var(--tg-bg)] shadow-[2px_0_8px_var(--tg-shadow)] transition-all duration-300 z-[9999] flex flex-col ${
+          modals.hamburger ? 'left-0' : '-left-full'
+        }`}
       >
+        {/* Header */}
         <div className="px-5 py-5 border-b border-[color:var(--tg-border)] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
               src={currentUser.avatar}
               alt="Profile"
-              className="w-[50px] h-[50px] rounded-full object-cover"
+              loading="lazy"
+              className="w-12 h-12 rounded-full object-cover"
             />
             <div className="flex flex-col">
-              <h3 className="text-[16px] font-semibold text-[var(--tg-text-primary)]">
+              <h3 className="text-base font-semibold text-[var(--tg-text-primary)]">
                 {currentUser.firstName} {currentUser.lastName}
               </h3>
-              <p className="text-[13px] text-[var(--tg-text-tertiary)] mt-0.5">
-                {currentUser.username}
-              </p>
+              <p className="text-sm text-[var(--tg-text-tertiary)]">{currentUser.username}</p>
             </div>
           </div>
           <button
@@ -70,6 +70,7 @@ export function HamburgerMenu() {
           </button>
         </div>
 
+        {/* Navigation */}
         <nav className="flex-1 overflow-y-auto py-2">
           <MenuItem icon="fa-user-group" label="New Group" onClick={() => handleAction('new-group')} />
           <MenuItem icon="fa-address-book" label="Contacts" onClick={() => handleAction('contacts')} />
@@ -84,6 +85,7 @@ export function HamburgerMenu() {
           />
         </nav>
 
+        {/* Footer */}
         <div className="border-t border-[color:var(--tg-border)] py-2">
           <MenuItem icon="fa-question-circle" label="Help" onClick={() => handleAction('help')} />
         </div>
@@ -101,10 +103,10 @@ interface MenuItemProps {
 function MenuItem({ icon, label, onClick }: MenuItemProps) {
   return (
     <div
-      className="flex items-center px-5 py-3 cursor-pointer transition-colors gap-4 text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
+      className="flex items-center px-5 py-3 cursor-pointer transition-colors gap-4 text-base text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)]"
       onClick={onClick}
     >
-      <i className={`fas ${icon} text-[18px] w-6 text-[var(--tg-text-secondary)]`}></i>
+      <i className={`fas ${icon} text-lg w-6 text-[var(--tg-text-secondary)]`}></i>
       <span className="flex-1">{label}</span>
     </div>
   )

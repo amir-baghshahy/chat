@@ -5,7 +5,7 @@ import { currentUser } from '../../data'
 type TabType = 'profile' | 'info' | 'edit'
 
 export function MyAccountModal() {
-  const { modals, closeModal } = useTelegram()
+  const { modals, closeModal, goBackModal } = useTelegram()
   const [activeTab, setActiveTab] = useState<TabType>('profile')
 
   if (!modals.myAccount) return null
@@ -23,7 +23,7 @@ export function MyAccountModal() {
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
           <button
             className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg hover:bg-[color:var(--tg-hover)] rounded-full mr-2"
-            onClick={() => closeModal('myAccount')}
+            onClick={goBackModal}
           >
             <i className="fas fa-arrow-left"></i>
           </button>
@@ -83,6 +83,7 @@ function ProfileTab() {
       <img
         src={currentUser.avatar}
         alt="Profile"
+        loading="lazy"
         className="w-24 h-24 rounded-full object-cover border-2 border-[color:var(--tg-border)]"
       />
       <div className="text-center">

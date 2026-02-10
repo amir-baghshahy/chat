@@ -12,7 +12,8 @@ export function ChatHeader() {
         break
       case 'search-chat':
         closeModal('chatActions')
-        // Handle search
+        // TODO: Backend - Search messages API call
+        // GET /api/chats/{chatId}/search?q={query}
         break
       case 'phone-call':
         closeModal('chatActions')

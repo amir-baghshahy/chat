@@ -138,6 +138,7 @@ export interface TelegramContextType {
   toggleDarkMode: () => void
   openModal: (modal: ModalName) => void
   closeModal: (modal: ModalName) => void
+  goBackModal: () => void
   openChat: (chatId: number) => void
   goBack: () => void
   sendMessage: (text: string) => void

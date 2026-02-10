@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useTelegram } from '../../contexts/TelegramContext'
 
 export function FoldersModal() {
-  const { modals, closeModal } = useTelegram()
+  const { modals, closeModal, goBackModal } = useTelegram()
   const [showCreateFolder, setShowCreateFolder] = useState(false)
 
   if (!modals.folders) return null
@@ -20,7 +20,7 @@ export function FoldersModal() {
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
           <button
             className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg hover:bg-[color:var(--tg-hover)] rounded-full mr-2"
-            onClick={() => closeModal('folders')}
+            onClick={goBackModal}
           >
             <i className="fas fa-arrow-left"></i>
           </button>

@@ -40,7 +40,7 @@ export function ForwardModal() {
               className="flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg transition-colors hover:bg-[color:var(--tg-hover)]"
               onClick={() => handleForwardToChat(chat)}
             >
-              <img src={chat.avatar} alt={chat.name} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
+              <img src={chat.avatar} alt={chat.name} className="w-12 h-12 rounded-full object-cover flex-shrink-0" loading="lazy" />
               <div className="flex-1 min-w-0">
                 <div className="text-[15px] font-semibold text-[var(--tg-text-primary)] truncate">{chat.name}</div>
                 <div className="text-[13px] text-[var(--tg-text-tertiary)] mt-0.5">

@@ -2,7 +2,7 @@ import { useTelegram } from '../../contexts/TelegramContext'
 import { currentUser } from '../../data'
 
 export function SettingsModal() {
-  const { modals, closeModal, openModal } = useTelegram()
+  const { modals, closeModal, openModal, goBackModal } = useTelegram()
 
   if (!modals.settings) return null
 
@@ -38,7 +38,7 @@ export function SettingsModal() {
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">
           <button
             className="w-9 h-9 flex items-center justify-center bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer text-lg hover:bg-[color:var(--tg-hover)] rounded-full mr-2"
-            onClick={() => closeModal('settings')}
+            onClick={goBackModal}
           >
             <i className="fas fa-arrow-left"></i>
           </button>
@@ -53,6 +53,7 @@ export function SettingsModal() {
             <img
               src={currentUser.avatar}
               alt="Profile"
+              loading="lazy"
               className="w-20 h-20 rounded-full object-cover border-2 border-[color:var(--tg-text-primary)]"
             />
             <div className="flex flex-col gap-1">
@@ -95,12 +96,12 @@ interface SettingsItemProps {
 function SettingsItem({ icon, label, badge, onClick }: SettingsItemProps) {
   return (
     <div
-      className="flex items-center gap-4 px-4 py-3 cursor-pointer transition-colors relative hover:bg-[color:var(--tg-hover)]"
+      className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 cursor-pointer transition-colors relative hover:bg-[color:var(--tg-hover)]"
       onClick={onClick}
     >
-      <i className={`fas ${icon} text-xl text-[var(--tg-text-primary)] w-6 text-center`}></i>
-      <span className="text-[15px] text-[var(--tg-text-primary)] flex-1">{label}</span>
-      {badge && <span className="text-[14px] text-[var(--tg-blue)] ml-auto">{badge}</span>}
+      <i className={`fas ${icon} text-lg sm:text-xl text-[var(--tg-text-primary)] w-6 sm:w-7 text-center flex-shrink-0`}></i>
+      <span className="text-[14px] sm:text-[15px] text-[var(--tg-text-primary)] flex-1 truncate">{label}</span>
+      {badge && <span className="text-[14px] text-[var(--tg-blue)] ml-auto flex-shrink-0">{badge}</span>}
     </div>
   )
 }

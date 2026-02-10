@@ -91,6 +91,7 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
         <img
           src={chat.avatar}
           alt={chat.name}
+          loading="lazy"
           className="w-[45px] sm:w-[50px] h-[45px] sm:h-[50px] rounded-full object-cover"
         />
         {chat.online && (

@@ -1,14 +1,26 @@
 import { useTelegram } from '../../contexts/TelegramContext'
+import { chatsData } from '../../data'
 import type { Contact } from '../../types'
 
 export function ContactsModal() {
-  const { modals, closeModal, filteredContacts, showToast } = useTelegram()
+  const { modals, closeModal, filteredContacts, openChat } = useTelegram()
 
   if (!modals.contacts) return null
 
+  // TODO: Backend - When clicking a contact, need to either:
+  // 1. Find existing chat with this contact
+  // 2. Create a new chat if none exists
   const handleContactClick = (contact: Contact) => {
     closeModal('contacts')
-    showToast('Chat Opened', `Starting conversation with ${contact.name}`, 'success')
+    // Find chat with this contact's name
+    const existingChat = chatsData.find((chat) => chat.name === contact.name)
+    if (existingChat) {
+      openChat(existingChat.id)
+    } else {
+      // TODO: Backend - Create new chat API call
+      // For now, find or create a chat for this contact
+      // In production: POST /api/chats with contactId
+    }
   }
 
   return (

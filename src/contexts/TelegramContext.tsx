@@ -1,6 +1,15 @@
-import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
-import { chatsData, contactsData, emojiData, callHistoryData, currentUser } from '../data'
-import type { TelegramContextType, TelegramProviderProps, Chat, Message, ModalsState, ModalName, Toast, ToastType } from '../types'
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
+import {
+  chatsData,
+  contactsData,
+  emojiData,
+  callHistoryData,
+  currentUser,
+} from '../data'
+import type { TelegramContextType, TelegramProviderProps, Chat, Message } from '../types'
+import { useModalHooks } from '../context/modalHooks'
+import { useChatHooks } from '../context/chatHooks'
+import { useMessageHooks } from '../context/messageHooks'
 
 const TelegramContext = createContext<TelegramContextType | undefined>(undefined)
 
@@ -25,31 +34,32 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
   const [callDuration, setCallDuration] = useState<number>(0)
   const [isMuted, setIsMuted] = useState<boolean>(false)
   const [isVideoOn, setIsVideoOn] = useState<boolean>(true)
-  const [replyingTo, setReplyingTo] = useState<Message | null>(null)
-  const [editingMessage, setEditingMessage] = useState<Message | null>(null)
-  const [forwardingMessage, setForwardingMessage] = useState<Message | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
-  const [toasts, setToasts] = useState<Toast[]>([])
   const [emojiCategory, setEmojiCategory] = useState<string>('smileys')
   const [emojiSearchQuery, setEmojiSearchQuery] = useState<string>('')
   const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false)
 
-  // Modals state
-  const [modals, setModals] = useState<ModalsState>({
-    settings: false,
-    profile: false,
-    newGroup: false,
-    contacts: false,
-    callHistory: false,
-    callScreen: false,
-    forward: false,
-    hamburger: false,
-    chatActions: false,
-    privacy: false,
-    chatSettings: false,
-    myAccount: false,
-    folders: false,
-    chat: false,
+  // Modal hooks
+  const { modalStack, modals, toasts, openModal, closeModal, goBackModal, showToast } = useModalHooks()
+
+  // Chat hooks
+  const { openChat, pinChat, muteChat, deleteChat, clearChatHistory, forwardMessageToChat } = useChatHooks({
+    currentChat,
+    setCurrentChat,
+    setMessages,
+    closeModal,
+    goBack: () => {
+      setCurrentChat(null)
+      setMessages([])
+    },
+    showToast,
+  })
+
+  // Message hooks
+  const { replyingTo, editingMessage, forwardingMessage, sendMessage, startReply, cancelReply, startEdit, cancelEdit, startForward } = useMessageHooks({
+    currentChat,
+    setMessages,
+    openModal,
   })
 
   // Handle resize
@@ -61,125 +71,16 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
 
   // Dark mode toggle
   const toggleDarkMode = useCallback(() => {
-    setIsDarkMode(prev => {
+    setIsDarkMode((prev) => {
       const newValue = !prev
       localStorage.setItem('darkMode', String(newValue))
       return newValue
     })
   }, [])
 
-  // Modal functions
-  const openModal = useCallback((modalName: ModalName) => {
-    setModals(prev => ({ ...prev, [modalName]: true }))
-  }, [])
-
-  const closeModal = useCallback((modalName: ModalName) => {
-    setModals(prev => ({ ...prev, [modalName]: false }))
-  }, [])
-
-  // Chat functions
-  const openChat = useCallback((chatId: number) => {
-    const chat = chatsData.find(c => c.id === chatId)
-    if (chat) {
-      setCurrentChat(chat)
-      setMessages(chat.messages || [])
-      closeModal('hamburger')
-    }
-  }, [closeModal])
-
-  const goBack = useCallback(() => {
-    setCurrentChat(null)
-    setMessages([])
-  }, [])
-
-  // Message functions
-  const sendMessage = useCallback((text: string) => {
-    if (!text.trim() || !currentChat) return
-
-    const newMessage: Message = {
-      id: Date.now(),
-      text: text.trim(),
-      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-      outgoing: true,
-      status: 'sent',
-    }
-
-    setMessages(prev => [...prev, newMessage])
-
-    // Update chat's last message
-    const chatIndex = chatsData.findIndex(c => c.id === currentChat.id)
-    if (chatIndex !== -1) {
-      chatsData[chatIndex].lastMessage = text.trim()
-      chatsData[chatIndex].time = newMessage.time
-    }
-
-    // Handle reply/edit
-    if (replyingTo) {
-      newMessage.replyTo = {
-        id: replyingTo.id,
-        name: currentChat.name,
-        text: replyingTo.text || 'Media',
-      }
-      setReplyingTo(null)
-    }
-
-    if (editingMessage) {
-      setMessages(prev => prev.map(msg =>
-        msg.id === editingMessage.id
-          ? { ...msg, text: text.trim(), edited: true }
-          : msg
-      ))
-      setEditingMessage(null)
-      return
-    }
-
-    // Simulate response
-    setTimeout(() => {
-      const responseMessage: Message = {
-        id: Date.now() + 1,
-        text: 'Thanks for your message!',
-        time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-        outgoing: false,
-      }
-      setMessages(prev => [...prev, responseMessage])
-
-      // Update message status
-      setMessages(prev => prev.map(msg =>
-        msg.id === newMessage.id ? { ...msg, status: 'read' } : msg
-      ))
-    }, 1000)
-  }, [currentChat, replyingTo, editingMessage])
-
-  const startReply = useCallback((message: Message) => {
-    setReplyingTo(message)
-    setEditingMessage(null)
-    setForwardingMessage(null)
-  }, [])
-
-  const cancelReply = useCallback(() => {
-    setReplyingTo(null)
-  }, [])
-
-  const startEdit = useCallback((message: Message) => {
-    setEditingMessage(message)
-    setReplyingTo(null)
-    setForwardingMessage(null)
-  }, [])
-
-  const cancelEdit = useCallback(() => {
-    setEditingMessage(null)
-  }, [])
-
-  const startForward = useCallback((message: Message) => {
-    setForwardingMessage(message)
-    setReplyingTo(null)
-    setEditingMessage(null)
-    openModal('forward')
-  }, [openModal])
-
   // Member selection
   const toggleMemberSelection = useCallback((memberId: number) => {
-    setSelectedMembers(prev => {
+    setSelectedMembers((prev) => {
       const newSet = new Set(prev)
       if (newSet.has(memberId)) {
         newSet.delete(memberId)
@@ -190,57 +91,17 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     })
   }, [])
 
-  // Toast notifications
-  const showToast = useCallback((title: string, message: string, type: ToastType = 'info', duration: number = 3000) => {
-    const id: number = Date.now()
-    setToasts(prev => [...prev, { id, title, message, type }])
-    setTimeout(() => {
-      setToasts(prev => prev.filter(t => t.id !== id))
-    }, duration)
+  // Emoji functions
+  const insertEmoji = useCallback((emoji: string) => {
+    return emoji
   }, [])
 
-  const forwardMessageToChat = useCallback((message: Message, chatId: number, fromChatName: string) => {
-    const targetChat = chatsData.find(c => c.id === chatId)
-    if (!targetChat) return
-
-    // Open the target chat and add the forwarded message
-    setCurrentChat(targetChat)
-    closeModal('forward')
-
-    const forwardedMessage: Message = {
-      id: Date.now(),
-      text: message.text,
-      type: message.type,
-      url: message.url,
-      time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
-      outgoing: true,
-      status: 'sent',
-      forwardedFrom: fromChatName,
-    }
-
-    // Add message to the target chat
-    if (!targetChat.messages) {
-      targetChat.messages = []
-    }
-    targetChat.messages.push(forwardedMessage)
-    setMessages(targetChat.messages)
-
-    // Update chat's last message
-    const chatIndex = chatsData.findIndex(c => c.id === chatId)
-    if (chatIndex !== -1) {
-      chatsData[chatIndex].lastMessage = (message.text || 'Media') + ' (forwarded)'
-      chatsData[chatIndex].time = forwardedMessage.time
-    }
-
-    showToast('Forwarded', `Message forwarded to ${targetChat.name}`, 'success')
-  }, [closeModal, showToast])
-
   // Call functions
-  const startCall = useCallback((chat: Chat, isVideo = false) => {
+  const startCall = useCallback((chat: Chat) => {
     setActiveCall(chat)
     setCallDuration(0)
     const interval = setInterval(() => {
-      setCallDuration(prev => prev + 1)
+      setCallDuration((prev) => prev + 1)
     }, 1000)
     return () => clearInterval(interval)
   }, [])
@@ -250,91 +111,27 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     setCallDuration(0)
   }, [])
 
-  // Emoji functions
-  const insertEmoji = useCallback((emoji: string) => {
-    return emoji
-  }, [])
-
-  // Chat actions
-  const pinChat = useCallback((chatId: number) => {
-    const chat = chatsData.find(c => c.id === chatId)
-    if (!chat) return
-
-    chat.isPinned = !chat.isPinned
-    showToast(
-      chat.isPinned ? 'Pinned' : 'Unpinned',
-      `${chat.name} has been ${chat.isPinned ? 'pinned' : 'unpinned'}`,
-      'success'
-    )
-  }, [showToast])
-
-  const muteChat = useCallback((chatId: number) => {
-    const chat = chatsData.find(c => c.id === chatId)
-    if (!chat) return
-
-    chat.muted = !chat.muted
-    showToast(
-      chat.muted ? 'Muted' : 'Unmuted',
-      `Notifications for ${chat.name} have been ${chat.muted ? 'disabled' : 'enabled'}`,
-      'success'
-    )
-  }, [showToast])
-
-  const deleteChat = useCallback((chatId: number) => {
-    const chatIndex = chatsData.findIndex(c => c.id === chatId)
-    if (chatIndex === -1) return
-
-    const chat = chatsData[chatIndex]
-    chatsData.splice(chatIndex, 1)
-
-    // If current chat was deleted, go back
-    if (currentChat?.id === chatId) {
-      goBack()
-    }
-
-    showToast('Deleted', `${chat.name} chat has been deleted`, 'error')
-  }, [currentChat, goBack, showToast])
-
-  const clearChatHistory = useCallback((chatId: number) => {
-    const chat = chatsData.find(c => c.id === chatId)
-    if (!chat) return
-
-    chat.messages = []
-    chat.lastMessage = ''
-    chat.unread = 0
-
-    // Update current chat messages if it's the open chat
-    if (currentChat?.id === chatId) {
-      setMessages([])
-    }
-
-    showToast('Cleared', `Chat history with ${chat.name} has been cleared`, 'success')
-  }, [currentChat, showToast])
-
   // Filtered data
   const filteredChats = searchQuery
-    ? chatsData.filter(chat =>
-        chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        chat.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+    ? chatsData.filter(
+        (chat) =>
+          chat.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          chat.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
       )
     : chatsData
 
   const filteredContacts = contactsSearchQuery
-    ? contactsData.filter(contact =>
-        contact.name.toLowerCase().includes(contactsSearchQuery.toLowerCase())
-      )
+    ? contactsData.filter((contact) => contact.name.toLowerCase().includes(contactsSearchQuery.toLowerCase()))
     : contactsData
 
   const filteredMembers = memberSearchQuery
-    ? contactsData.filter(contact =>
-        contact.name.toLowerCase().includes(memberSearchQuery.toLowerCase())
-      )
+    ? contactsData.filter((contact) => contact.name.toLowerCase().includes(memberSearchQuery.toLowerCase()))
     : contactsData
 
   const filteredEmojis = emojiSearchQuery
-    ? Object.values(emojiData).flat().filter(emoji =>
-        emoji.includes(emojiSearchQuery.toLowerCase())
-      )
+    ? Object.values(emojiData)
+        .flat()
+        .filter((emoji) => emoji.includes(emojiSearchQuery.toLowerCase()))
     : emojiData[emojiCategory] || emojiData.smileys
 
   const value: TelegramContextType = {
@@ -386,8 +183,12 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     toggleDarkMode,
     openModal,
     closeModal,
+    goBackModal,
     openChat,
-    goBack,
+    goBack: () => {
+      setCurrentChat(null)
+      setMessages([])
+    },
     sendMessage,
     startReply,
     cancelReply,

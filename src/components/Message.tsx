@@ -84,7 +84,8 @@ export function Message({ message }: MessageProps) {
         startEdit(message)
         break
       case 'delete':
-        // Handle delete
+        // TODO: Backend - Delete message API call
+        // DELETE /api/messages/{messageId}
         break
       default:
         break
@@ -105,35 +106,30 @@ export function Message({ message }: MessageProps) {
         onTouchMove={handleTouchMove}
         onClick={handleTap}
       >
-        {message.forwardedFrom && (
-          <div className="flex items-center gap-2 mb-2 px-2 py-1.5 bg-[color:var(--tg-bg-secondary)] rounded-lg overflow-hidden">
-            <i className="fas fa-share text-[var(--tg-blue)] text-xs flex-shrink-0"></i>
-            <div className="text-[12px] text-[var(--tg-text-secondary)]">
-              Forwarded from <span className="font-semibold text-[var(--tg-text-primary)]">{message.forwardedFrom}</span>
-            </div>
-          </div>
-        )}
-        {message.replyTo && (
-          <div className="flex items-center gap-2 mb-2 px-2 py-1.5 bg-[color:var(--tg-bg-secondary)] rounded-lg border-l-2 border-[color:var(--tg-blue)] overflow-hidden">
-            <div className="w-0.5 h-5 bg-[color:var(--tg-blue)] rounded-sm flex-shrink-0"></div>
-            <div className="flex-1 min-w-0">
-              <div className="text-[12px] font-semibold text-[var(--tg-blue)] mb-0.5 truncate">
-                {message.replyTo.name}
-              </div>
-              <div className="text-[12px] text-[var(--tg-text-secondary)] truncate">
-                {message.replyTo.text || 'Media'}
-              </div>
-            </div>
-          </div>
-        )}
         <div
           className={clsx(
-            'px-3 py-2 rounded-xl shadow-sm',
+            'px-3 py-2 rounded-xl shadow-sm flex flex-col',
             message.outgoing
               ? 'bg-[color:var(--tg-message-out)] rounded-tr-sm'
               : 'bg-[color:var(--tg-message-in)] rounded-tl-sm'
           )}
         >
+          {message.forwardedFrom && (
+            <div className="flex items-center gap-2 mb-2 text-[11px] text-[var(--tg-text-tertiary)]">
+              <i className="fas fa-share text-[var(--tg-blue)] text-[10px] flex-shrink-0"></i>
+              <span>Forwarded from <span className="text-[var(--tg-text-secondary)]">{message.forwardedFrom}</span></span>
+            </div>
+          )}
+          {message.replyTo && (
+            <div className="mb-2 pb-2 border-b border-black/5 dark:border-white/5">
+              <div className="text-[11px] text-[var(--tg-text-tertiary)] mb-0.5">
+                <span className="text-[var(--tg-blue)]">{message.replyTo.name}</span>
+              </div>
+              <div className="text-[12px] text-[var(--tg-text-secondary)] truncate opacity-80">
+                {message.replyTo.text || 'Media'}
+              </div>
+            </div>
+          )}
           {message.type === 'image' ? (
             <div className="mb-1">
               <img

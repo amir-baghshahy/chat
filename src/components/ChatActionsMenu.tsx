@@ -11,16 +11,20 @@ export function ChatActionsMenu() {
         openModal('profile')
         break
       case 'search':
-        // Handle search
+        // TODO: Backend - Search messages API call
+        // GET /api/chats/{chatId}/search?q={query}
         break
       case 'mute-notifications':
-        // Handle mute
+        // TODO: Backend - Mute chat API call
+        // POST /api/chats/{chatId}/mute
         break
       case 'clear-history':
-        // Handle clear history
+        // TODO: Backend - Clear chat history API call
+        // DELETE /api/chats/{chatId}/messages
         break
       case 'delete-chat':
-        // Handle delete chat
+        // TODO: Backend - Delete chat API call
+        // DELETE /api/chats/{chatId}
         break
       default:
         break
