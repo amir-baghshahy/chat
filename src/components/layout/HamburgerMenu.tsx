@@ -1,4 +1,4 @@
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { currentUser } from '../../data'
 
 export function HamburgerMenu() {

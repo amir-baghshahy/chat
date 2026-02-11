@@ -1,8 +1,8 @@
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { useEffect } from 'react'
 
 export function ChatActionsMenu() {
-  const { modals, closeModal, openModal, currentChat, clearChatHistory, deleteChat, muteChat } = useTelegram()
+  const { modals, closeModal, openModal, currentChat, clearChatHistory, deleteChat, muteChat, goBack, showToast } = useTelegram()
 
   const handleAction = (action: string) => {
     closeModal('chatActions')
@@ -20,16 +20,20 @@ export function ChatActionsMenu() {
       case 'mute-notifications':
         if (currentChat) {
           muteChat(currentChat.id)
+          showToast('Success', `${currentChat.name} notifications muted`, 'info')
         }
         break
       case 'clear-history':
         if (currentChat) {
           clearChatHistory(currentChat.id)
+          showToast('Success', 'Chat history cleared', 'info')
         }
         break
       case 'delete-chat':
         if (currentChat) {
           deleteChat(currentChat.id)
+          goBack()
+          showToast('Deleted', `${currentChat.name} chat deleted`, 'error')
         }
         break
       default:

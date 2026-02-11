@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { ToggleSwitch } from '../ui/ToggleSwitch'
 
 export function ChatSettingsModal() {

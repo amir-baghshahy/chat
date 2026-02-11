@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { ReplyPreview } from './ReplyPreview'
 import { EmojiPicker } from '../ui/EmojiPicker'
 
@@ -139,7 +139,7 @@ export function MessageInput() {
         </div>
       )}
 
-      <div className="flex items-center px-3 sm:px-5 py-3 gap-2 sm:gap-3 bg-[color:var(--tg-bg)] border-t border-[color:var(--tg-border)] relative">
+      <div className="flex items-center px-2 sm:px-5 py-2 sm:py-3 gap-1.5 sm:gap-3 bg-[color:var(--tg-bg)] border-t border-[color:var(--tg-border)] relative">
         <input
           ref={fileInputRef}
           type="file"
@@ -148,25 +148,25 @@ export function MessageInput() {
         />
 
         <button
-          className="bg-transparent border-none cursor-pointer p-1.5 sm:p-2 text-[var(--tg-text-secondary)] transition-colors hover:bg-[color:var(--tg-hover)] hover:text-[var(--tg-blue)] w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full flex-shrink-0"
+          className="bg-transparent border-none cursor-pointer p-1 sm:p-2 text-[var(--tg-text-secondary)] transition-colors hover:bg-[color:var(--tg-hover)] hover:text-[var(--tg-blue)] w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center rounded-full flex-shrink-0"
           onClick={handleFileClick}
           title="Attach"
         >
-          <i className="fas fa-paperclip text-base sm:text-xl"></i>
+          <i className="fas fa-paperclip text-sm sm:text-xl"></i>
         </button>
 
-        <div className="flex-1 flex items-center bg-[color:var(--tg-bg-secondary)] rounded-[20px] sm:rounded-[24px] px-3 sm:px-4 py-2 gap-1.5 sm:gap-2 min-w-0">
+        <div className="flex-1 flex items-center bg-[color:var(--tg-bg-secondary)] rounded-[18px] sm:rounded-[24px] px-2 sm:px-4 py-1.5 sm:py-2 gap-1 sm:gap-2 min-w-0">
           <button
-            className="bg-transparent border-none cursor-pointer p-1.5 sm:p-2 text-[var(--tg-text-secondary)] transition-colors hover:bg-[color:var(--tg-hover)] hover:text-[var(--tg-blue)] w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center rounded-full flex-shrink-0"
+            className="bg-transparent border-none cursor-pointer p-1 sm:p-2 text-[var(--tg-text-secondary)] transition-colors hover:bg-[color:var(--tg-hover)] hover:text-[var(--tg-blue)] w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center rounded-full flex-shrink-0"
             onClick={() => setShowEmojiPicker(!showEmojiPicker)}
             title="Emoji"
           >
-            <i className="far fa-smile text-base sm:text-xl"></i>
+            <i className="far fa-smile text-sm sm:text-xl"></i>
           </button>
 
           <textarea
             ref={textareaRef}
-            className="flex-1 border-none bg-transparent outline-none text-[15px] sm:text-[16px] text-[var(--tg-text-primary)] placeholder:text-[var(--tg-text-tertiary)] min-w-0 resize-none overflow-y-auto max-h-[120px]"
+            className="flex-1 border-none bg-transparent outline-none text-[14px] sm:text-[16px] text-[var(--tg-text-primary)] placeholder:text-[var(--tg-text-tertiary)] min-w-0 resize-none overflow-y-auto max-h-[100px] sm:max-h-[120px] py-1"
             placeholder={replyingTo ? 'Write a reply...' : editingMessage ? 'Edit message...' : 'Write a message...'}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
@@ -177,7 +177,7 @@ export function MessageInput() {
         </div>
 
         <button
-          className={`rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-colors flex-shrink-0 ${
+          className={`rounded-full w-9 h-9 sm:w-12 sm:h-12 flex items-center justify-center transition-colors flex-shrink-0 ${
             inputValue.trim() || filePreview
               ? 'bg-[color:var(--tg-blue)] text-white hover:bg-[color:var(--tg-blue-dark)] cursor-pointer'
               : 'bg-[color:var(--tg-bg-secondary)] text-[var(--tg-text-tertiary)] cursor-not-allowed'
@@ -186,7 +186,7 @@ export function MessageInput() {
           disabled={!inputValue.trim() && !filePreview}
           title="Send"
         >
-          <i className="fas fa-paper-plane text-sm sm:text-base"></i>
+          <i className="fas fa-paper-plane text-xs sm:text-base"></i>
         </button>
 
         {/* Emoji Picker */}

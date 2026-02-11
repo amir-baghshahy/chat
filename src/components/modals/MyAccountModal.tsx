@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { currentUser } from '../../data'
 
 type TabType = 'profile' | 'info' | 'edit'

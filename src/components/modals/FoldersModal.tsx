@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 
 export function FoldersModal() {
   const { modals, goBackSettings } = useTelegram()

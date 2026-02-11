@@ -1,8 +1,9 @@
 import { useState, useCallback, useRef } from 'react'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { clsx } from 'clsx'
 import { MessageContent } from './MessageContent'
 import { MessageContextMenu } from './MessageContextMenu'
+import type { Message as MessageType } from '../../types'
 
 
 interface MessageProps {

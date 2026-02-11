@@ -1,6 +1,6 @@
 import { SearchInput } from '../ui/SearchInput'
 import { ChatList } from '../chat/ChatList'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 
 export function Sidebar() {
   const { isMobile, currentChat, openModal } = useTelegram()

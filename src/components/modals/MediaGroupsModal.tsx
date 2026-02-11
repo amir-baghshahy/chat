@@ -1,4 +1,4 @@
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 
 export function MediaGroupsModal() {
   const { modals, closeModal } = useTelegram()

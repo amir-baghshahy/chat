@@ -13,8 +13,9 @@ import { MyAccountModal } from './components/modals/MyAccountModal'
 import { ChatSettingsModal } from './components/modals/ChatSettingsModal'
 import { FoldersModal } from './components/modals/FoldersModal'
 import { ToastContainer } from './components/common/ToastContainer'
-import { useTelegram } from './context/TelegramContext'
-import { TelegramProvider } from './context/TelegramContext'
+import { Auth } from './components/auth/Auth'
+import { useTelegram } from './store'
+import { useAuthStore } from './store/authStore'
 
 function AppContent() {
   const {
@@ -26,6 +27,7 @@ function AppContent() {
     goBack,
     openModal,
   } = useTelegram()
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
   useEffect(() => {
     if (isDarkMode) {
@@ -38,6 +40,11 @@ function AppContent() {
       document.body.classList.add('light-mode')
     }
   }, [isDarkMode])
+
+  // Show auth screens if not authenticated
+  if (!isAuthenticated) {
+    return <Auth />
+  }
 
   return (
     <div className={`flex h-screen w-full telegram-container ${isDarkMode ? 'dark' : ''}`}>
@@ -127,11 +134,7 @@ function AppContent() {
 }
 
 function App() {
-  return (
-    <TelegramProvider>
-      <AppContent />
-    </TelegramProvider>
-  )
+  return <AppContent />
 }
 
 export default App

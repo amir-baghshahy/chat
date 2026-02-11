@@ -1,6 +1,6 @@
 import { forwardRef, useRef, useEffect, useMemo } from 'react'
 import { Message } from './Message'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 
 export const MessageList = forwardRef<HTMLDivElement>((_props, ref) => {
   const { messages, isMobile, chatSearchQuery } = useTelegram()

@@ -1,4 +1,4 @@
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { currentUser } from '../../data'
 
 export function SettingsModal() {
@@ -43,7 +43,7 @@ export function SettingsModal() {
       onClick={() => closeModal('settings')}
     >
       <div
-        className="modal-content bg-[color:var(--tg-bg-secondary)] rounded-lg w-[90%] max-w-[380px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
+        className="modal-content bg-[color:var(--tg-bg-secondary)] rounded-lg w-[90%] max-w-[415px] max-h-[80vh] flex flex-col shadow-[0_8px_32px_var(--tg-shadow)] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="px-4 py-3 flex items-center bg-[color:var(--tg-bg-secondary)] border-b border-[color:var(--tg-border)]">

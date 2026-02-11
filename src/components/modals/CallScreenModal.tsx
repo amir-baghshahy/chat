@@ -2,7 +2,7 @@
 // - Initialize WebRTC connection
 // - Handle microphone/camera permissions
 // - Implement actual audio/video streams
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { useState, useEffect } from 'react'
 
 export function CallScreenModal() {

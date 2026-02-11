@@ -1,5 +1,5 @@
-import { useTelegram } from '../../context/TelegramContext'
-import type { Message as MessageType } from '../types'
+import { useTelegram } from '../../store'
+import type { Message as MessageType } from '../../types'
 
 interface ReplyPreviewProps {
   message: MessageType | null

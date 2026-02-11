@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react'
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { clsx } from 'clsx'
 import { TypingIndicator } from './ChatIndicators'
 import { Chat } from '../../types'

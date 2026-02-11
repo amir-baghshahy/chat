@@ -1,15 +1,17 @@
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 import { chatsData } from '../../data'
 import type { Chat } from '../../types'
 
 export function ForwardModal() {
-  const { modals, closeModal, currentChat, forwardingMessage, forwardMessageToChat } = useTelegram()
+  const { modals, closeModal, currentChat, forwardingMessage, forwardMessageToChat, showToast } = useTelegram()
 
   if (!modals.forward) return null
 
   const handleForwardToChat = (chat: Chat) => {
     if (!forwardingMessage) return
     forwardMessageToChat(forwardingMessage, chat.id, currentChat?.name || 'Unknown')
+    closeModal('forward')
+    showToast('Success', `Message forwarded to ${chat.name}`, 'success')
   }
 
   const availableChats = chatsData.filter(c => c.id !== currentChat?.id)

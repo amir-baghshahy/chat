@@ -1,4 +1,4 @@
-import { useTelegram } from '../../context/TelegramContext'
+import { useTelegram } from '../../store'
 
 /** Typing indicator - shows "typing..." animation */
 export function TypingIndicator({ chatId }: { chatId: number }) {
