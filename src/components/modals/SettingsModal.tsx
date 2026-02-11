@@ -20,6 +20,18 @@ export function SettingsModal() {
       case 'folders':
         navigateSettings('settings', 'folders')
         break
+      case 'notifications':
+        // TODO: Implement notifications and sounds settings modal
+        break
+      case 'advanced':
+        // TODO: Implement advanced settings modal
+        break
+      case 'devices':
+        // TODO: Implement speakers and camera settings modal
+        break
+      case 'battery':
+        // TODO: Implement battery and animations settings modal
+        break
       default:
         break
     }
@@ -71,13 +83,13 @@ export function SettingsModal() {
           {/* Settings List */}
           <div className="py-2">
             <SettingsItem icon="fa-user" label="My Account" onClick={() => handleAction('my-account')} />
-            <SettingsItem icon="fa-bell" label="Notifications and Sounds" onClick={() => {}} />
+            <SettingsItem icon="fa-bell" label="Notifications and Sounds" onClick={() => handleAction('notifications')} />
             <SettingsItem icon="fa-lock" label="Privacy and Security" onClick={() => handleAction('privacy')} />
             <SettingsItem icon="fa-comment-dots" label="Chat Settings" onClick={() => handleAction('chat-settings')} />
             <SettingsItem icon="fa-folder" label="Folders" onClick={() => handleAction('folders')} />
-            <SettingsItem icon="fa-sliders" label="Advanced" onClick={() => {}} />
-            <SettingsItem icon="fa-microphone-lines" label="Speakers and Camera" onClick={() => {}} />
-            <SettingsItem icon="fa-battery-three-quarters" label="Battery and Animations" onClick={() => {}} />
+            <SettingsItem icon="fa-sliders" label="Advanced" onClick={() => handleAction('advanced')} />
+            <SettingsItem icon="fa-microphone-lines" label="Speakers and Camera" onClick={() => handleAction('devices')} />
+            <SettingsItem icon="fa-battery-three-quarters" label="Battery and Animations" onClick={() => handleAction('battery')} />
           </div>
         </div>
       </div>

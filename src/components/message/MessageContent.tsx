@@ -100,7 +100,7 @@ export function MessageContent({ message, onReplyClick, onForwardClick }: Messag
           <i
             className={clsx(
               'fas fa-check-double text-xs',
-              message.status === 'read' ? 'text-green-500' : 'text-[var(--tg-text-tertiary)]'
+              message.status === 'read' ? 'text-white' : 'text-[var(--tg-text-tertiary)]'
             )}
           ></i>
         )}

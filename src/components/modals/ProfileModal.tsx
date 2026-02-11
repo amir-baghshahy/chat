@@ -1,9 +1,13 @@
 import { useState } from 'react'
 import { useTelegram } from '../../context/TelegramContext'
 import type { Chat } from '../../types'
+import { MediaPhotosModal } from './MediaPhotosModal'
+import { MediaFilesModal } from './MediaFilesModal'
+import { MediaLinksModal } from './MediaLinksModal'
+import { MediaGroupsModal } from './MediaGroupsModal'
 
 export function ProfileModal() {
-  const { modals, closeModal, currentChat, currentUser } = useTelegram()
+  const { modals, closeModal, currentChat, currentUser, startCall, openModal, showToast } = useTelegram()
   const [isMuted, setIsMuted] = useState(false)
 
   if (!modals.profile) return null
@@ -19,10 +23,48 @@ export function ProfileModal() {
     : false
 
   const handleAction = (action: string) => {
-    if (action === 'mute') {
-      setIsMuted(!isMuted)
+    switch (action) {
+      case 'message':
+        // Focus on message input - the chat is already open when viewing profile
+        closeModal('profile')
+        // Focus on the textarea input
+        setTimeout(() => {
+          const textarea = document.querySelector('textarea') as HTMLTextAreaElement
+          if (textarea) {
+            textarea.focus()
+          }
+        }, 100)
+        break
+      case 'mute':
+        // Toggle mute state locally
+        setIsMuted(!isMuted)
+        showToast('Success', isMuted ? 'Notifications enabled' : 'Notifications muted', 'info')
+        break
+      case 'call':
+        // Initiate call - open call screen modal
+        if (currentChat) {
+          closeModal('profile')
+          startCall(currentChat, false)
+        }
+        break
+      case 'more':
+        // Open chat actions menu for more options (block, report, etc.)
+        closeModal('profile')
+        openModal('chatActions')
+        break
+      default:
+        break
     }
-    // Handle other actions
+  }
+
+  const handleMediaClick = (mediaType: 'photos' | 'files' | 'links' | 'groups') => {
+    const modalMap = {
+      photos: 'mediaPhotos',
+      files: 'mediaFiles',
+      links: 'mediaLinks',
+      groups: 'mediaGroups',
+    } as const
+    openModal(modalMap[mediaType])
   }
 
   return (
@@ -68,27 +110,36 @@ export function ProfileModal() {
 
           {/* Detailed Info */}
           <div className="px-5 py-4">
-            <ProfileInfoItem icon="fa-info-circle" label="Bio" value={isChat && (chat as Chat).bio ? (chat as Chat).bio! : currentUser.bio!} />
-            <ProfileInfoItem icon="fa-at" label="Username" value={isChat && (chat as Chat).username ? (chat as Chat).username! : currentUser.username!} />
+            <ProfileInfoItem
+              icon="fa-info-circle"
+              label="Bio"
+              value={isChat && (chat as Chat).bio ? (chat as Chat).bio! : currentUser.bio!}
+              copyOnClick={true}
+            />
+            <ProfileInfoItem
+              icon="fa-at"
+              label="Username"
+              value={isChat && (chat as Chat).username ? (chat as Chat).username! : currentUser.username!}
+              copyOnClick={true}
+            />
           </div>
 
           {/* Media/Stats Section */}
+          {/* TODO: Backend - Fetch actual media counts from backend */}
           <div className="px-5 py-4 border-t border-[color:var(--tg-border)]">
-            <ProfileMediaItem icon="fa-images" label="3 photos" />
-            <ProfileMediaItem icon="fa-file" label="20 files" />
-            <ProfileMediaItem icon="fa-link" label="62 shared links" />
-            <ProfileMediaItem icon="fa-users" label="5 groups in common" />
-          </div>
-
-          {/* Share Option */}
-          <div className="px-5 py-4 border-t border-[color:var(--tg-border)]">
-            <button className="w-full flex items-center justify-center gap-2.5 py-3 bg-transparent border-none text-[var(--tg-text-primary)] cursor-pointer rounded-lg transition-colors hover:bg-[color:var(--tg-hover)] text-[15px]">
-              <i className="fas fa-share text-base"></i>
-              <span>Share this contact</span>
-            </button>
+            <ProfileMediaItem icon="fa-images" label="3 photos" onClick={() => handleMediaClick('photos')} />
+            <ProfileMediaItem icon="fa-file" label="20 files" onClick={() => handleMediaClick('files')} />
+            <ProfileMediaItem icon="fa-link" label="62 shared links" onClick={() => handleMediaClick('links')} />
+            <ProfileMediaItem icon="fa-users" label="5 groups in common" onClick={() => handleMediaClick('groups')} />
           </div>
         </div>
       </div>
+
+      {/* Media Modals */}
+      <MediaPhotosModal />
+      <MediaFilesModal />
+      <MediaLinksModal />
+      <MediaGroupsModal />
     </div>
   )
 }
@@ -115,11 +166,23 @@ interface ProfileInfoItemProps {
   icon: string
   label: string
   value: string
+  copyOnClick?: boolean
 }
 
-function ProfileInfoItem({ icon, label, value }: ProfileInfoItemProps) {
+function ProfileInfoItem({ icon, label, value, copyOnClick = false }: ProfileInfoItemProps) {
+  const handleCopy = () => {
+    if (copyOnClick) {
+      navigator.clipboard.writeText(value)
+      // Could add a toast notification here
+    }
+  }
+
   return (
-    <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 border-b border-[color:var(--tg-border)] last:border-b-0">
+    <div
+      className={`flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 border-b border-[color:var(--tg-border)] last:border-b-0 ${copyOnClick ? 'cursor-pointer hover:bg-[color:var(--tg-hover)]' : ''}`}
+      onClick={copyOnClick ? handleCopy : undefined}
+      title={copyOnClick ? 'Click to copy' : undefined}
+    >
       <div className="w-9 h-9 bg-[color:var(--tg-bg)] rounded-full flex items-center justify-center text-[var(--tg-text-primary)] flex-shrink-0 text-base">
         <i className={`fas ${icon}`}></i>
       </div>
@@ -127,6 +190,9 @@ function ProfileInfoItem({ icon, label, value }: ProfileInfoItemProps) {
         <div className="text-[12px] sm:text-[13px] text-[var(--tg-text-secondary)] mb-1 truncate">{label}</div>
         <div className="text-[14px] sm:text-[15px] text-[var(--tg-text-primary)] font-medium break-words">{value}</div>
       </div>
+      {copyOnClick && (
+        <i className="fas fa-copy text-[var(--tg-text-tertiary)] text-sm"></i>
+      )}
     </div>
   )
 }
@@ -134,11 +200,15 @@ function ProfileInfoItem({ icon, label, value }: ProfileInfoItemProps) {
 interface ProfileMediaItemProps {
   icon: string
   label: string
+  onClick?: () => void
 }
 
-function ProfileMediaItem({ icon, label }: ProfileMediaItemProps) {
+function ProfileMediaItem({ icon, label, onClick }: ProfileMediaItemProps) {
   return (
-    <div className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 border-b border-[color:var(--tg-border)] cursor-pointer last:border-b-0 hover:bg-[color:var(--tg-hover)]">
+    <div
+      className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 border-b border-[color:var(--tg-border)] cursor-pointer last:border-b-0 hover:bg-[color:var(--tg-hover)]"
+      onClick={onClick}
+    >
       <i className={`fas ${icon} text-xl text-[var(--tg-text-primary)] w-6 flex-shrink-0`}></i>
       <span className="text-[14px] sm:text-[15px] text-[var(--tg-text-primary)] break-words">{label}</span>
     </div>

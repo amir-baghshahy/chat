@@ -146,6 +146,10 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
         <div
           className="fixed inset-0 z-[10000]"
           onClick={() => setShowContextMenu(false)}
+          onContextMenu={(e) => {
+            e.preventDefault()
+            setShowContextMenu(false)
+          }}
           onTouchStart={(e) => {
             e.stopPropagation()
             setShowContextMenu(false)
@@ -153,6 +157,7 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
         />
         <div
           className="chat-context-menu fixed bg-[color:var(--tg-bg)] rounded-lg shadow-[0_4px_16px_var(--tg-shadow)] min-w-[180px] sm:min-w-[200px] z-[10001] overflow-hidden"
+          onContextMenu={(e) => e.preventDefault()}
           style={{
             left: Math.min(contextMenuPos.x, window.innerWidth - 200),
             top: Math.min(contextMenuPos.y, window.innerHeight - 200)
@@ -163,14 +168,14 @@ export function ChatItem({ chat, isActive }: ChatItemProps) {
             onClick={() => handleContextMenuAction('pin')}
           >
             <i className="fas fa-thumbtack text-[var(--tg-blue)]"></i>
-            <span>Pin Chat</span>
+            <span>{chat.isPinned ? 'Unpin Chat' : 'Pin Chat'}</span>
           </div>
           <div
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"
             onClick={() => handleContextMenuAction('mute')}
           >
-            <i className="fas fa-bell-slash text-[var(--tg-blue)]"></i>
-            <span>Mute Notifications</span>
+            <i className={`fas ${chat.muted ? 'fa-bell' : 'fa-bell-slash'} text-[var(--tg-blue)]`}></i>
+            <span>{chat.muted ? 'Unmute Notifications' : 'Mute Notifications'}</span>
           </div>
           <div className="h-px bg-[color:var(--tg-border)] my-1"></div>
           <div

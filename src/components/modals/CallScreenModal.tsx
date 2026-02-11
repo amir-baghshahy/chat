@@ -1,3 +1,7 @@
+// TODO: Implement WebRTC for real audio/video calling
+// - Initialize WebRTC connection
+// - Handle microphone/camera permissions
+// - Implement actual audio/video streams
 import { useTelegram } from '../../context/TelegramContext'
 import { useState, useEffect } from 'react'
 

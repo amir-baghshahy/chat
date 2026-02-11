@@ -32,7 +32,7 @@ export function HamburgerMenu() {
         toggleDarkMode()
         break
       case 'help':
-        // Handle help
+        // TODO: Implement help modal with FAQ and support links
         break
       default:
         break

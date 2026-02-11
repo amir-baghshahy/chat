@@ -15,18 +15,27 @@ export function MessageInput() {
   } = useTelegram()
 
   const [inputValue, setInputValue] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
   useEffect(() => {
     if (editingMessage) {
       setInputValue(editingMessage.text || '')
-      inputRef.current?.focus()
+      textareaRef.current?.focus()
     } else if (!replyingTo) {
       setInputValue('')
     }
   }, [editingMessage, replyingTo])
+
+  // Auto-resize textarea based on content
+  useEffect(() => {
+    const textarea = textareaRef.current
+    if (textarea) {
+      textarea.style.height = 'auto'
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`
+    }
+  }, [inputValue])
 
   const handleSend = () => {
     if (!inputValue.trim()) return
@@ -35,7 +44,7 @@ export function MessageInput() {
     setSelectedFile(null)
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSend()
@@ -44,7 +53,7 @@ export function MessageInput() {
 
   const handleEmojiSelect = (emoji: string) => {
     setInputValue(prev => prev + emoji)
-    inputRef.current?.focus()
+    textareaRef.current?.focus()
   }
 
   const handleFileClick = () => {
@@ -111,21 +120,26 @@ export function MessageInput() {
             <i className="far fa-smile text-base sm:text-xl"></i>
           </button>
 
-          <input
-            ref={inputRef}
-            type="text"
-            className="flex-1 border-none bg-transparent outline-none text-[15px] sm:text-[16px] text-[var(--tg-text-primary)] placeholder:text-[var(--tg-text-tertiary)] min-w-0 whitespace-nowrap overflow-x-auto"
+          <textarea
+            ref={textareaRef}
+            className="flex-1 border-none bg-transparent outline-none text-[15px] sm:text-[16px] text-[var(--tg-text-primary)] placeholder:text-[var(--tg-text-tertiary)] min-w-0 resize-none overflow-y-auto max-h-[120px]"
             placeholder={replyingTo ? 'Write a reply...' : editingMessage ? 'Edit message...' : 'Write a message...'}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             autoComplete="off"
+            rows={1}
           />
         </div>
 
         <button
-          className="bg-[color:var(--tg-blue)] text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-colors hover:bg-[color:var(--tg-blue-dark)] flex-shrink-0"
+          className={`rounded-full w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-colors flex-shrink-0 ${
+            inputValue.trim()
+              ? 'bg-[color:var(--tg-blue)] text-white hover:bg-[color:var(--tg-blue-dark)] cursor-pointer'
+              : 'bg-[color:var(--tg-bg-secondary)] text-[var(--tg-text-tertiary)] cursor-not-allowed'
+          }`}
           onClick={handleSend}
+          disabled={!inputValue.trim()}
           title="Send"
         >
           <i className="fas fa-paper-plane text-sm sm:text-base"></i>

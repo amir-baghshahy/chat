@@ -18,6 +18,10 @@ export function useModalHooks() {
     myAccount: false,
     folders: false,
     chat: false,
+    mediaPhotos: false,
+    mediaFiles: false,
+    mediaLinks: false,
+    mediaGroups: false,
   })
   const [toasts, setToasts] = useState<Toast[]>([])
 

@@ -104,6 +104,10 @@ export type ModalName =
   | 'chatSettings'
   | 'myAccount'
   | 'folders'
+  | 'mediaPhotos'
+  | 'mediaFiles'
+  | 'mediaLinks'
+  | 'mediaGroups'
 
 /** Modal state object */
 export interface ModalsState {

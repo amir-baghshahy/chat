@@ -12,6 +12,10 @@ export function MessageContextMenu({ message, position, onAction }: MessageConte
       <div
         className="fixed inset-0 z-[10000]"
         onClick={() => onAction('close')}
+        onContextMenu={(e) => {
+          e.preventDefault()
+          onAction('close')
+        }}
         onTouchStart={(e) => {
           e.stopPropagation()
           onAction('close')
@@ -19,6 +23,7 @@ export function MessageContextMenu({ message, position, onAction }: MessageConte
       />
       <div
         className="message-context-menu fixed bg-[color:var(--tg-bg)] rounded-lg shadow-[0_4px_16px_var(--tg-shadow)] min-w-[180px] sm:min-w-[200px] z-[10001] overflow-hidden"
+        onContextMenu={(e) => e.preventDefault()}
         style={{
           left: Math.min(position.x, window.innerWidth - 200),
           top: Math.min(position.y, window.innerHeight - 200),
