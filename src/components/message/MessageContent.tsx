@@ -88,24 +88,19 @@ export function MessageContent({ message, onReplyClick, onForwardClick }: Messag
           {message.text}
         </div>
       )}
-      <div
-        className={clsx(
-          'text-[11px] text-[var(--tg-text-tertiary)] mt-1 flex justify-end gap-1',
-          message.outgoing && 'text-green-500'
-        )}
-      >
-        {message.edited && <span className="text-[10px] italic mr-1">edited</span>}
+      <div className="text-[11px] text-[var(--tg-text-tertiary)] mt-1 flex justify-end gap-1 dark:text-white/70">
+        {message.edited && <span className="text-[10px] italic mr-1 dark:text-white/70">edited</span>}
         {message.time}
         {message.outgoing && (
           <i
             className={clsx(
-              'fas fa-check-double text-xs',
-              message.status === 'read' ? 'text-white' : 'text-[var(--tg-text-tertiary)]'
+              'fas fa-check text-xs dark:text-white/70',
+              message.status === 'read' ? 'fa-check-double' : 'fa-check'
             )}
           ></i>
         )}
         {message.forwardedFrom && (
-          <i className="fas fa-share text-[11px] ml-1" title={`Forwarded from ${message.forwardedFrom}`}></i>
+          <i className="fas fa-share text-[11px] ml-1 dark:text-white/70" title={`Forwarded from ${message.forwardedFrom}`}></i>
         )}
       </div>
     </>
