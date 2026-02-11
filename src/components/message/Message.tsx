@@ -1,9 +1,9 @@
 import { useState, useCallback, useRef } from 'react'
-import { useTelegram } from '../context/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { clsx } from 'clsx'
-import { MessageContent } from './message/MessageContent'
-import { MessageContextMenu } from './message/MessageContextMenu'
-import type { Message as MessageType } from '../types'
+import { MessageContent } from './MessageContent'
+import { MessageContextMenu } from './MessageContextMenu'
+
 
 interface MessageProps {
   message: MessageType
@@ -113,6 +113,11 @@ export function Message({ message }: MessageProps) {
         break
       case 'edit':
         startEdit(message)
+        break
+      case 'copy':
+        if (message.text) {
+          navigator.clipboard.writeText(message.text)
+        }
         break
       case 'delete':
         // TODO: Backend - Delete message API call

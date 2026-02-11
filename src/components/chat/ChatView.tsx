@@ -1,6 +1,6 @@
 import { ChatHeader } from './ChatHeader'
-import { MessageList } from './MessageList'
-import { MessageInput } from './MessageInput'
+import { MessageList } from '../message/MessageList'
+import { MessageInput } from '../message/MessageInput'
 import { ChatActionsMenu } from './ChatActionsMenu'
 
 export function ChatView() {

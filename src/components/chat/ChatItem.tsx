@@ -1,8 +1,9 @@
 import { useState, useCallback, useRef } from 'react'
-import { useTelegram } from '../context/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { clsx } from 'clsx'
-import type { Chat } from '../types'
-import { TypingIndicator } from './chat/ChatIndicators'
+import { TypingIndicator } from './ChatIndicators'
+import { Chat } from '../../types'
+
 
 interface ChatItemProps {
   chat: Chat

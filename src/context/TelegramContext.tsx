@@ -109,6 +109,7 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     searchQuery: searchState.searchQuery,
     contactsSearchQuery: searchState.contactsSearchQuery,
     memberSearchQuery: searchState.memberSearchQuery,
+    chatSearchQuery: searchState.chatSearchQuery,
 
     // Emoji state
     emojiCategory: emojiState.emojiCategory,
@@ -147,6 +148,7 @@ export const TelegramProvider = ({ children }: TelegramProviderProps) => {
     setSearchQuery: searchState.setSearchQuery,
     setContactsSearchQuery: searchState.setContactsSearchQuery,
     setMemberSearchQuery: searchState.setMemberSearchQuery,
+    setChatSearchQuery: searchState.setChatSearchQuery,
     setIsMuted: callState.setIsMuted,
     setIsVideoOn: callState.setIsVideoOn,
     setEmojiCategory: emojiState.setEmojiCategory,

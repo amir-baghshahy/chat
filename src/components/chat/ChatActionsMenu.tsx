@@ -1,8 +1,8 @@
-import { useTelegram } from '../context/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 import { useEffect } from 'react'
 
 export function ChatActionsMenu() {
-  const { modals, closeModal, openModal } = useTelegram()
+  const { modals, closeModal, openModal, currentChat, clearChatHistory, deleteChat, muteChat } = useTelegram()
 
   const handleAction = (action: string) => {
     closeModal('chatActions')
@@ -11,20 +11,26 @@ export function ChatActionsMenu() {
         openModal('profile')
         break
       case 'search':
-        // TODO: Backend - Search messages API call
-        // GET /api/chats/{chatId}/search?q={query}
+        // Focus on search input in sidebar
+        const searchInput = document.querySelector('input[placeholder*="Search"]') as HTMLInputElement
+        if (searchInput) {
+          searchInput.focus()
+        }
         break
       case 'mute-notifications':
-        // TODO: Backend - Mute chat API call
-        // POST /api/chats/{chatId}/mute
+        if (currentChat) {
+          muteChat(currentChat.id)
+        }
         break
       case 'clear-history':
-        // TODO: Backend - Clear chat history API call
-        // DELETE /api/chats/{chatId}/messages
+        if (currentChat) {
+          clearChatHistory(currentChat.id)
+        }
         break
       case 'delete-chat':
-        // TODO: Backend - Delete chat API call
-        // DELETE /api/chats/{chatId}
+        if (currentChat) {
+          deleteChat(currentChat.id)
+        }
         break
       default:
         break

@@ -1,5 +1,5 @@
-import { useTelegram } from '../context/TelegramContext'
-import { currentUser } from '../data'
+import { useTelegram } from '../../context/TelegramContext'
+import { currentUser } from '../../data'
 
 export function HamburgerMenu() {
   const { modals, closeModal, openModal, toggleDarkMode, isDarkMode, openChat } = useTelegram()

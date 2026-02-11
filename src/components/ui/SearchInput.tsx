@@ -1,4 +1,4 @@
-import { useTelegram } from '../context/TelegramContext'
+import { useTelegram } from '../../context/TelegramContext'
 
 interface SearchInputProps {
   context?: 'chats' | 'contacts' | 'members'

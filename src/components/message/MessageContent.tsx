@@ -83,24 +83,44 @@ export function MessageContent({ message, onReplyClick, onForwardClick }: Messag
             </div>
           )}
         </div>
+      ) : message.type === 'file' ? (
+        <div className="mb-1">
+          <div className="flex items-center gap-3 p-3 bg-[color:var(--tg-bg-secondary)] rounded-lg">
+            <div className="w-12 h-12 bg-[color:var(--tg-blue)] rounded-lg flex items-center justify-center flex-shrink-0">
+              <i className="fas fa-file text-white text-lg"></i>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[13px] font-medium text-[var(--tg-text-primary)] truncate">{message.fileName || 'File'}</div>
+              <div className="text-[11px] text-[var(--tg-text-tertiary)]">{message.fileSize || 'Unknown size'}</div>
+            </div>
+            <i className="fas fa-download text-[var(--tg-blue)]"></i>
+          </div>
+          {message.text && (
+            <div className="mt-1 text-[15px] leading-relaxed break-words text-[var(--tg-text-primary)]">
+              {message.text}
+            </div>
+          )}
+        </div>
       ) : (
         <div className="text-[15px] leading-relaxed break-words text-[var(--tg-text-primary)]">
           {message.text}
         </div>
       )}
-      <div className="text-[11px] text-[var(--tg-text-tertiary)] mt-1 flex justify-end gap-1 dark:text-white/70">
-        {message.edited && <span className="text-[10px] italic mr-1 dark:text-white/70">edited</span>}
+      <div className="text-[11px] text-[var(--tg-text-tertiary)] dark:text-white/60 mt-1 flex justify-end gap-1 items-center">
+        {message.edited && <span className="text-[10px] italic mr-1 dark:text-white/60">edited</span>}
         {message.time}
         {message.outgoing && (
           <i
             className={clsx(
-              'fas fa-check text-xs dark:text-white/70',
-              message.status === 'read' ? 'fa-check-double' : 'fa-check'
+              'text-xs ml-1',
+              message.status === 'read'
+                ? 'fas fa-check-double text-white dark:text-white'
+                : 'fas fa-check text-[var(--tg-text-tertiary)] dark:text-white/50'
             )}
           ></i>
         )}
         {message.forwardedFrom && (
-          <i className="fas fa-share text-[11px] ml-1 dark:text-white/70" title={`Forwarded from ${message.forwardedFrom}`}></i>
+          <i className="fas fa-share text-[11px] ml-1 dark:text-white/60" title={`Forwarded from ${message.forwardedFrom}`}></i>
         )}
       </div>
     </>

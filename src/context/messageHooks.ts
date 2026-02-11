@@ -2,6 +2,12 @@ import { useCallback, useState } from 'react'
 import { chatsData } from '../data'
 import type { Message, Chat, ModalName } from '../types'
 
+interface FilePreview {
+  file: File
+  url: string
+  type: 'image' | 'video' | 'file'
+}
+
 interface MessageHooksProps {
   currentChat: Chat | null
   setMessages: (messages: Message[] | ((prev: Message[]) => Message[])) => void
@@ -14,12 +20,12 @@ export function useMessageHooks({ currentChat, setMessages, openModal }: Message
   const [forwardingMessage, setForwardingMessage] = useState<Message | null>(null)
 
   const sendMessage = useCallback(
-    (text: string) => {
-      if (!text.trim() || !currentChat) return
+    (text: string, filePreview?: FilePreview) => {
+      if ((!text.trim() && !filePreview) || !currentChat) return
 
       const newMessage: Message = {
         id: Date.now(),
-        text: text.trim(),
+        text: text.trim() || undefined,
         time: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',
@@ -29,11 +35,19 @@ export function useMessageHooks({ currentChat, setMessages, openModal }: Message
         status: 'sent',
       }
 
+      // Add file attachment if present
+      if (filePreview) {
+        newMessage.type = filePreview.type
+        newMessage.url = filePreview.url
+        newMessage.fileName = filePreview.file.name
+        newMessage.fileSize = `${(filePreview.file.size / 1024).toFixed(1)} KB`
+      }
+
       setMessages((prev) => [...prev, newMessage])
 
       const chatIndex = chatsData.findIndex((c) => c.id === currentChat.id)
       if (chatIndex !== -1) {
-        chatsData[chatIndex].lastMessage = text.trim()
+        chatsData[chatIndex].lastMessage = text.trim() || (filePreview?.type === 'image' ? '📷 Photo' : filePreview?.type === 'video' ? '🎥 Video' : '📎 File')
         chatsData[chatIndex].time = newMessage.time
       }
 
@@ -64,10 +78,18 @@ export function useMessageHooks({ currentChat, setMessages, openModal }: Message
             hour12: false,
           }),
           outgoing: false,
+          status: 'sent',
         }
         setMessages((prev) => [...prev, responseMessage])
 
-        setMessages((prev) => prev.map((msg) => (msg.id === newMessage.id ? { ...msg, status: 'read' } : msg)))
+        // Mark sent message as read
+        setMessages((prev) => prev.map((msg) => (msg.id === newMessage.id ? { ...msg, status: 'read' as const } : msg)))
+
+        // Increment unread count for the chat
+        const chatIndex = chatsData.findIndex((c) => c.id === currentChat.id)
+        if (chatIndex !== -1) {
+          chatsData[chatIndex].unread += 1
+        }
       }, 1000)
     },
     [currentChat, replyingTo, editingMessage, setMessages]

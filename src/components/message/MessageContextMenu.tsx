@@ -43,6 +43,13 @@ export function MessageContextMenu({ message, position, onAction }: MessageConte
           <i className="fas fa-share text-[var(--tg-blue)]"></i>
           <span>Forward</span>
         </div>
+        <div
+          className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"
+          onClick={() => onAction('copy')}
+        >
+          <i className="far fa-copy text-[var(--tg-blue)]"></i>
+          <span>Copy Text</span>
+        </div>
         {message.outgoing && (
           <div
             className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors text-[15px] text-[var(--tg-text-primary)] hover:bg-[color:var(--tg-hover)] active:bg-[color:var(--tg-hover)]"

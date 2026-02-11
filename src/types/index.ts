@@ -1,118 +1,13 @@
 // ===== Type Definitions for Telegram Web Clone =====
-// This file contains all type definitions used across the application
+// This is the main types export file - re-exports from sub-modules
 
-// ==================== DATA MODELS ====================
+// Export all types from sub-modules
+export * from './data'
+export * from './ui'
+export * from './providers'
 
-/** User profile information */
-export interface User {
-  firstName: string
-  lastName: string
-  username: string
-  bio: string
-  phone: string
-  avatar: string
-}
-
-/** Chat/conversation data */
-export interface Chat {
-  id: number
-  name: string
-  username?: string
-  avatar: string
-  lastMessage: string
-  time: string
-  unread: number
-  online: boolean
-  isSaved?: boolean
-  isGroup?: boolean
-  isPinned?: boolean
-  muted?: boolean
-  bio?: string
-  messages?: Message[]
-  /** Typing indicator status */
-  typing?: boolean
-  /** Uploading file indicator */
-  uploadingFile?: {
-    name: string
-    progress: number
-  }
-}
-
-/** Message in a chat */
-export interface Message {
-  id: number
-  text?: string
-  type?: 'text' | 'image' | 'video'
-  url?: string
-  time: string
-  outgoing: boolean
-  status?: 'sent' | 'read'
-  replyTo?: {
-    id: number
-    name: string
-    text: string
-  }
-  edited?: boolean
-  forwardedFrom?: string
-}
-
-/** Contact information */
-export interface Contact {
-  id: number
-  name: string
-  username: string
-  avatar: string
-  status: string
-}
-
-/** Call history entry */
-export interface CallHistory {
-  id: number
-  name: string
-  avatar: string
-  type: 'incoming' | 'outgoing' | 'video'
-  duration: string
-  time: string
-  missed: boolean
-}
-
-// ==================== UI STATE ====================
-
-/** Toast notification types */
-export type ToastType = 'info' | 'success' | 'error' | 'warning'
-
-/** Toast notification data */
-export interface Toast {
-  id: number
-  title: string
-  message: string
-  type: ToastType
-}
-
-/** Available modal names */
-export type ModalName =
-  | 'settings'
-  | 'profile'
-  | 'newGroup'
-  | 'contacts'
-  | 'callHistory'
-  | 'callScreen'
-  | 'forward'
-  | 'hamburger'
-  | 'chatActions'
-  | 'privacy'
-  | 'chatSettings'
-  | 'myAccount'
-  | 'folders'
-  | 'mediaPhotos'
-  | 'mediaFiles'
-  | 'mediaLinks'
-  | 'mediaGroups'
-
-/** Modal state object */
-export interface ModalsState {
-  [key: string]: boolean
-}
+// Import types for context interface to avoid circular dependencies
+import type { Chat, Message, User, Contact, CallHistory, Toast, ToastType, ModalName, ModalsState } from './index'
 
 // ==================== CONTEXT ====================
 
@@ -146,6 +41,7 @@ export interface TelegramContextType {
   searchQuery: string
   contactsSearchQuery: string
   memberSearchQuery: string
+  chatSearchQuery: string
 
   // ========== EMOJI STATE ==========
   emojiCategory: string
@@ -179,6 +75,7 @@ export interface TelegramContextType {
   setSearchQuery: (query: string) => void
   setContactsSearchQuery: (query: string) => void
   setMemberSearchQuery: (query: string) => void
+  setChatSearchQuery: (query: string) => void
   setIsMuted: (muted: boolean) => void
   setIsVideoOn: (on: boolean) => void
   setEmojiCategory: (category: string) => void
@@ -203,7 +100,7 @@ export interface TelegramContextType {
   /** Go back from chat view (mobile) */
   goBack: () => void
   /** Send a message */
-  sendMessage: (text: string) => void
+  sendMessage: (text: string, filePreview?: { file: File; url: string; type: 'image' | 'video' | 'file' }) => void
   /** Start replying to a message */
   startReply: (message: Message) => void
   /** Cancel reply */
@@ -234,11 +131,4 @@ export interface TelegramContextType {
   endCall: () => void
   /** Insert emoji (returns the emoji) */
   insertEmoji: (emoji: string) => string
-}
-
-// ==================== PROVIDERS ====================
-
-/** Props for TelegramProvider component */
-export interface TelegramProviderProps {
-  children: React.ReactNode
 }

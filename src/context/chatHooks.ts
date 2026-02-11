@@ -16,6 +16,14 @@ export function useChatHooks({ currentChat, setCurrentChat, setMessages, closeMo
     (chatId: number) => {
       const chat = chatsData.find((c) => c.id === chatId)
       if (chat) {
+        // Reset unread count when opening chat
+        chat.unread = 0
+        // Mark all incoming messages as read
+        if (chat.messages) {
+          chat.messages = chat.messages.map(msg =>
+            !msg.outgoing ? { ...msg, status: 'read' as const } : msg
+          )
+        }
         setCurrentChat(chat)
         setMessages(chat.messages || [])
         closeModal('hamburger')
@@ -88,6 +96,8 @@ export function useChatHooks({ currentChat, setCurrentChat, setMessages, closeMo
         text: message.text,
         type: message.type,
         url: message.url,
+        fileName: message.fileName,
+        fileSize: message.fileSize,
         time: new Date().toLocaleTimeString('en-US', {
           hour: '2-digit',
           minute: '2-digit',

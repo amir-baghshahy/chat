@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ChatView } from './ChatView'
-import { EmptyState } from './EmptyState'
-import { useTelegram } from '../context/TelegramContext'
+import { EmptyState } from '../ui/EmptyState'
+import { useTelegram } from '../../context/TelegramContext'
 
 export function ChatArea() {
   const { currentChat, isMobile } = useTelegram()
