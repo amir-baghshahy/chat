@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Telegram Web Clone** built with React 19, Vite, TypeScript, and Tailwind CSS. It's a single-page application that replicates the Telegram Web interface with chat functionality, modals, and responsive design.
+This is a **Telegram Web Clone** built with React 19, Vite, TypeScript (strict mode), and Tailwind CSS. It's a single-page application that replicates the Telegram Web interface with chat functionality, modals, and responsive design.
+
+**Note**: No linting or testing is currently configured - only `dev`, `build`, and `preview` scripts are available.
 
 ## Development Commands
 
@@ -23,12 +25,26 @@ npm run preview
 
 ### State Management Pattern
 
-The app uses a **centralized Context-based architecture** with logic separation:
+The app uses a **centralized Context-based architecture** with modular logic separation:
 
-- **[src/contexts/TelegramContext.tsx](src/contexts/TelegramContext.tsx)** - Main context provider that aggregates state and actions from custom hooks
+**Main Context Provider:**
+- **[src/context/TelegramContext.tsx](src/context/TelegramContext.tsx)** - Aggregates state from all hooks below
+
+**Operation Hooks:**
 - **[src/context/modalHooks.ts](src/context/modalHooks.ts)** - Modal stack management (open/close/back navigation) and toast notifications
 - **[src/context/chatHooks.ts](src/context/chatHooks.ts)** - Chat operations (open, pin, mute, delete, clear history, forward)
 - **[src/context/messageHooks.ts](src/context/messageHooks.ts)** - Message operations (send, reply, edit, forward)
+
+**State Hooks (in [src/context/telegram/](src/context/telegram/)):**
+- `useUIState.ts` - Dark mode toggle, mobile breakpoint detection (768px)
+- `useChatState.ts` - Current chat, messages array, goBack navigation
+- `useSearchState.ts` - Search queries (chats, contacts, members, emojis)
+- `useEmojiState.ts` - Emoji category, search, picker visibility
+- `useCallState.ts` - Active call, duration, mute, video toggle
+- `useMemberSelection.ts` - Selected members for group creation
+- `useChatIndicators.ts` - Typing indicators and upload progress per chat
+- `useSettingsNavigation.ts` - Settings modal stack navigation
+- `useTelegramFilters.ts` - Filters for chats/contacts/members/emojis
 
 Access the context with `useTelegram()` hook - it throws if used outside `TelegramProvider`.
 
@@ -40,10 +56,12 @@ App.tsx (TelegramProvider wrapper)
 │   ├── HamburgerMenu (slide-out navigation)
 │   ├── Sidebar (chat list with search)
 │   │   └── ChatList → ChatItem
-│   ├── ChatArea (main messages view)
-│   │   ├── ChatHeader
-│   │   ├── MessageList → Message
-│   │   └── MessageInput (with emoji picker, reply/edit support)
+│   ├── ChatArea (wraps ChatView with mobile animations)
+│   │   └── ChatView (actual messages view)
+│   │       ├── ChatHeader
+│   │       ├── MessageList → Message
+│   │       ├── MessageInput (with emoji picker, reply/edit support)
+│   │       └── ChatActionsMenu
 │   └── Modals (all conditionally rendered based on modals state)
 │       └── [ModalName]Modal.tsx
 ```
